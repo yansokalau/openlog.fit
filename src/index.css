@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --paper: #ffffff;
+  --ink: #000000;
+  /* The one accent: marks the tracker you have open. Ink on it is always
+     black, in both themes, so the pairing stays readable. */
+  --accent: #f5e401;
+  --accent-ink: #000000;
+  /* Washed-out accent, so selected text stays readable against it. */
+  --selection: #fbf5a3;
+}
+
+.dark {
+  --paper: #000000;
+  --ink: #ffffff;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial,
+    sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--paper);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Same in both themes: ink on a selection is always black. */
+  ::selection {
+    background-color: var(--selection);
+    color: var(--accent-ink);
+  }
+
+  button {
+    @apply select-none;
+  }
+
+  /* Tailwind v4's Preflight gives buttons the default arrow; put the hand back
+     on anything that actually does something when clicked. */
+  button:not(:disabled),
+  select:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  /* Inputs inherit the two-colour theme, never a UA accent. */
+  input,
+  textarea {
+    @apply bg-transparent text-ink;
+    accent-color: var(--ink);
+  }
+
+  input::placeholder {
+    @apply text-ink/40;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ink;
+  }
+}
