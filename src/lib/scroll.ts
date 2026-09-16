@@ -1,9 +1,9 @@
 /**
- * How much room to leave above an element scrolled into view: the sticky date
- * bar plus a little air. The single source for both the "is it visible?" maths
- * and the scroll-margin applied to the elements themselves.
+ * How much room to leave above an element scrolled into view: the sticky
+ * header (62px) plus a little air. The single source for both the "is it
+ * visible?" maths and the scroll-margin applied to the elements themselves.
  */
-export const STICKY_CLEARANCE = 64
+export const STICKY_CLEARANCE = 72
 
 /**
  * Scrolls an element into view, preferring a smooth glide but never depending

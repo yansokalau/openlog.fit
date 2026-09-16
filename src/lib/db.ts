@@ -207,6 +207,27 @@ export async function removeTrackerCascade(trackerId: string): Promise<void> {
   await done(tx);
 }
 
+/**
+ * Swaps the entire contents in one transaction: an import that fails partway
+ * would otherwise leave a plan whose entries belong to a different one.
+ */
+export async function replaceAll(data: {
+  groups: Group[]
+  trackers: Tracker[]
+  entries: Entry[]
+}): Promise<void> {
+  const db = await open()
+  const names = [STORES.groups, STORES.trackers, STORES.entries]
+  const tx = db.transaction(names, 'readwrite')
+
+  for (const name of names) tx.objectStore(name).clear()
+  for (const group of data.groups) tx.objectStore(STORES.groups).put(group)
+  for (const tracker of data.trackers) tx.objectStore(STORES.trackers).put(tracker)
+  for (const entry of data.entries) tx.objectStore(STORES.entries).put(entry)
+
+  await done(tx)
+}
+
 export async function loadAll(): Promise<{
   groups: Group[];
   trackers: Tracker[];

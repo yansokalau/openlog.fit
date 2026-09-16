@@ -58,6 +58,16 @@ export function ArrowIcon({ direction, ...props }: IconProps & { direction: 'up'
   )
 }
 
+export function DotsIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={2.5}>
+      <circle cx="5" cy="12" r="1" />
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+    </Icon>
+  )
+}
+
 export function PencilIcon(props: IconProps) {
   return (
     <Icon {...props} size={props.size ?? 14}>

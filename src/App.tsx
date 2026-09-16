@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { DateBar } from "./components/DateBar";
+import { AppMenu } from "./components/AppMenu";
+import { DatePicker } from "./components/DatePicker";
 import { GroupSection } from "./components/GroupSection";
-import { ThemeToggle } from "./components/ThemeToggle";
-import { UnitToggle } from "./components/UnitToggle";
 import { Button, Input } from "./components/ui";
 import { useGym } from "./lib/store";
 import { useTheme } from "./lib/theme";
@@ -28,20 +27,27 @@ export default function App() {
   return (
     <UnitContext.Provider value={system}>
       <ActiveDateContext.Provider value={active}>
-        <div className="mx-auto min-h-dvh w-full max-w-xl px-4 pb-16 pt-6">
-          <header className="mb-4 flex items-center gap-2 border-b-2 border-ink pb-4">
+        <div className="mx-auto min-h-dvh w-full max-w-xl px-4 pb-16">
+          {/* Sticky as one piece: the day being logged into has to stay on
+              screen, and it now lives beside the wordmark. */}
+          <header className="sticky top-0 z-30 -mx-4 mb-6 flex items-center gap-2 border-b-2 border-ink bg-paper px-4 py-3">
             <h1 className="mr-auto text-lg font-bold uppercase tracking-[0.12em]">
               OpenLog
             </h1>
-            <UnitToggle system={system} onChange={setSystem} />
-            <ThemeToggle theme={theme} onChange={setTheme} />
+            <DatePicker
+              date={active.date}
+              isToday={active.isToday}
+              onChange={setPickedDate}
+            />
+            <AppMenu
+              theme={theme}
+              onTheme={setTheme}
+              system={system}
+              onSystem={setSystem}
+              snapshot={gym.snapshot}
+              onReplaceAll={gym.replaceAll}
+            />
           </header>
-
-          <DateBar
-            date={active.date}
-            isToday={active.isToday}
-            onChange={setPickedDate}
-          />
 
           {!gym.ready ? (
             <p className="text-sm text-ink/50">Loading…</p>

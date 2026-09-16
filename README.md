@@ -48,8 +48,21 @@ npm run dev
   0..n. `moveGroup` does the same one level up, for the groups themselves.
 - `src/lib/utils.ts` — last-session summary (per-field ranges), date helpers.
 - `src/lib/seed.ts` — the starting plan, written on a first run or SCHEMA bump.
-- `src/components/` — group sections, tracker rows, the entry logger, theme
-  switch.
+- `src/lib/backup.ts` — the export file format and the validation an import has
+  to pass before it is allowed to replace everything.
+- `src/components/` — group sections, tracker rows, the entry logger, and the
+  header menu holding display settings and the data actions.
+
+## Backups
+
+The `⋯` menu exports the whole database as JSON and imports it back. An import
+**replaces** everything rather than merging — it is a restore, not a sync — so it
+asks first and states what it is about to write. Files are checked for the right
+app, a known format version and intact records before any of that; a bad file is
+refused with a reason and nothing is touched.
+
+Since data lives only in one browser on one origin, an export is the only way to
+move it between devices or survive a cleared browser.
 
 ## Notes
 
@@ -78,9 +91,10 @@ npm run dev
   `index.html` can apply it synchronously and avoid a flash on load.
 - Expanded/editing state lives in `App`, not in the row. Moving a tracker into
   another group re-parents it, and row-local state would be dropped mid-edit.
-- Backfilling past sessions is a mode, not a per-entry field: the sticky bar
-  names the day being logged into, turns yellow when it isn't today, and resets
-  on reload. Entries written into a past day get an `at` inside that day rather
+- Backfilling past sessions is a mode, not a per-entry field: the date control
+  in the sticky header names the day being logged into, turns yellow when it
+  isn't today, and resets on reload. Its picker overlays rather than expands, so
+  opening it never shifts the plan underneath. Entries written into a past day get an `at` inside that day rather
   than the wall clock, so "most recent" stays chronological.
 - "Today" is resolved when a set is logged, not when the page rendered — a tab
   left open across midnight would otherwise file the next morning's first set

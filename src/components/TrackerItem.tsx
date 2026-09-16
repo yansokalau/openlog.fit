@@ -71,6 +71,14 @@ export function TrackerItem({
     null,
   )
 
+  // The badge answers "when did I last do this exercise", which a substitution
+  // counts towards just as much as the primary — unlike the numbers below it,
+  // which speak only for the primary.
+  const lastLogged = entries.reduce<string | null>(
+    (latest, entry) => (!latest || entry.date > latest ? entry.date : latest),
+    null,
+  )
+
   // What each variant would take with it if removed.
   const entryCounts = entries.reduce<Record<string, number>>((counts, entry) => {
     counts[entry.variantId] = (counts[entry.variantId] ?? 0) + 1
@@ -186,7 +194,7 @@ export function TrackerItem({
                 {activeDayLabel(today, isToday)}
               </span>
             ) : (
-              primaryLast && (
+              lastLogged && (
                 // Quieter than the "done" badge on purpose: it is context, not
                 // an achievement — a hairline border and muted ink.
                 <span
@@ -196,7 +204,7 @@ export function TrackerItem({
                 >
                   {/* Relative only while the active day is today — "2d ago"
                       has no obvious reference point once Sep 9 is selected. */}
-                  {isToday ? daysAgo(primaryLast.date) : shortDate(primaryLast.date)}
+                  {isToday ? daysAgo(lastLogged) : shortDate(lastLogged)}
                 </span>
               )
             )}

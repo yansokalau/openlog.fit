@@ -256,6 +256,23 @@ export function useGym() {
     await db.remove(db.STORES.entries, id);
   }, []);
 
+  /** Everything, for an export — the same three lists the database holds. */
+  const snapshot = useCallback(
+    () => ({ groups, trackers, entries }),
+    [groups, trackers, entries]
+  );
+
+  /** Replaces the whole plan and its history, for an import or a reset. */
+  const replaceAll = useCallback(
+    async (data: { groups: Group[]; trackers: Tracker[]; entries: Entry[] }) => {
+      setGroups(data.groups);
+      setTrackers(data.trackers);
+      setEntries(data.entries);
+      await db.replaceAll(data);
+    },
+    []
+  );
+
   const sortedGroups = useMemo(
     () => [...groups].sort((a, b) => a.order - b.order),
     [groups]
@@ -296,5 +313,7 @@ export function useGym() {
     moveTracker,
     logEntry,
     removeEntry,
+    snapshot,
+    replaceAll,
   };
 }

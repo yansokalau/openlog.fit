@@ -4,11 +4,13 @@ import { ChevronDownIcon } from './icons'
 import { Button, Label } from './ui'
 
 /**
- * Sticky bar naming the day entries land in. It stays on screen because
- * backdating is a mode, and a mode you can scroll away from is a mode you
- * forget you are in — hence the accent fill whenever it is not today.
+ * Names the day entries land in, and opens a panel to change it. It sits in the
+ * sticky header because backdating is a mode, and a mode you can scroll away
+ * from is a mode you forget you are in — hence the accent fill when it is not
+ * today. The panel overlays rather than expands, so opening it never shifts the
+ * plan underneath.
  */
-export function DateBar({
+export function DatePicker({
   date,
   isToday,
   onChange,
@@ -42,36 +44,24 @@ export function DateBar({
   }
 
   return (
-    <div ref={ref} className="sticky top-0 z-20 -mx-4 mb-6 px-4">
-      <div
-        className={`flex items-center gap-2 border-2 px-3 py-2 ${
-          isToday ? 'border-ink bg-paper' : 'border-accent-ink bg-accent text-accent-ink'
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-label="Change the day being logged into"
+        onClick={() => setOpen((v) => !v)}
+        className={`flex h-9 items-center gap-1 border-2 px-2 text-[11px] font-bold uppercase tracking-wider transition-colors ${
+          isToday
+            ? 'border-ink text-ink hover:bg-ink hover:text-paper'
+            : 'border-accent-ink bg-accent text-accent-ink'
         }`}
       >
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-label="Change the day being logged into"
-          onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-1 font-bold uppercase tracking-[0.12em] underline-offset-4 hover:underline"
-        >
-          {activeDayLabel(date, isToday)}
-          <ChevronDownIcon size={16} />
-        </button>
-
-        {!isToday && (
-          <button
-            type="button"
-            onClick={() => choose(null)}
-            className="ml-auto border-2 border-current px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider hover:bg-accent-ink hover:text-accent"
-          >
-            Back to today
-          </button>
-        )}
-      </div>
+        {activeDayLabel(date, isToday)}
+        <ChevronDownIcon size={14} />
+      </button>
 
       {open && (
-        <div className="border-x-2 border-b-2 border-ink bg-paper p-3">
+        <div className="absolute right-0 top-11 z-30 w-64 border-2 border-ink bg-paper p-3">
           <Label>Recent</Label>
           <div className="mb-3 flex flex-wrap gap-2">
             {recentDays(7).map((day) => (
