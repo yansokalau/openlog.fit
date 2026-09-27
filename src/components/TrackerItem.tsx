@@ -66,10 +66,14 @@ export function TrackerItem({
 
   const selectedEntries = entries.filter((e) => e.variantId === selected.id)
   const selectedToday = selectedEntries.filter((e) => e.date === today).sort((a, b) => a.at - b.at)
-  const latest = selectedEntries.reduce<Entry | null>(
-    (newest, e) => (!newest || e.at > newest.at ? e : newest),
-    null,
-  )
+  /**
+   * What the steppers open on. Mid-session it continues from the set just
+   * logged; otherwise it offers the *first* set of the last session — the
+   * working weight that session was built around, rather than the lighter
+   * drop-off it usually ends on.
+   */
+  const previousSession = lastSession(selectedEntries, preset.fields, system)
+  const startFrom = selectedToday.at(-1) ?? previousSession?.entries[0]
 
   // The badge answers "when did I last do this exercise", which a substitution
   // counts towards just as much as the primary — unlike the numbers below it,
@@ -254,7 +258,7 @@ export function TrackerItem({
             dateLabel={activeDayLabel(today, isToday)}
             todayEntries={selectedToday}
             alsoToday={elsewhereToday}
-            defaults={latest?.values ?? {}}
+            defaults={startFrom?.values ?? {}}
             onLog={(values) => onLog(selected, values)}
             onRemoveEntry={onRemoveEntry}
             history={history.map(([date, rows]) => ({ date: shortDate(date), entries: rows }))}
