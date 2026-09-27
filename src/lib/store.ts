@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as db from "./db";
+import { seedPlan } from "./seed";
 import type { Entry, Group, Tracker, Variant } from "./types";
 import { dateKey, uid } from "./utils";
 
@@ -13,7 +14,13 @@ export function useGym() {
     let cancelled = false;
 
     (async () => {
-      // Seeding disabled: nothing writes the starting plan or the SCHEMA stamp.
+      // Local development starts from the sample plan, so there is always
+      // something to look at. A deployed build never seeds — and so never runs
+      // the SCHEMA wipe that goes with it, which would take real data with it.
+      // The branch is constant-folded away in production, taking the seed with
+      // it.
+      // if (import.meta.env.DEV) await db.ensureSchema(seedPlan);
+
       const data = await db.loadAll();
 
       if (cancelled) return;
@@ -264,7 +271,11 @@ export function useGym() {
 
   /** Replaces the whole plan and its history, for an import or a reset. */
   const replaceAll = useCallback(
-    async (data: { groups: Group[]; trackers: Tracker[]; entries: Entry[] }) => {
+    async (data: {
+      groups: Group[];
+      trackers: Tracker[];
+      entries: Entry[];
+    }) => {
       setGroups(data.groups);
       setTrackers(data.trackers);
       setEntries(data.entries);

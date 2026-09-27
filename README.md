@@ -77,9 +77,14 @@ move it between devices or survive a cleared browser.
   Units are global, never per tracker — mixed units make summaries meaningless.
 - Fields come from the tracker's preset and are shared by every variant, so a
   substitution stays comparable with the movement it replaced.
+- **Seeding is development-only.** `npm run dev` starts from the sample plan;
+  a deployed build never seeds, so it also never runs the SCHEMA wipe that goes
+  with it — that wipe would take real training data with it. The branch is
+  constant-folded away in production, so `seed.ts` is not in the bundle at all
+  (`grep "Pec deck" dist/assets/*.js` finds nothing).
 - No migrations while pre-release: the database stays at version 1 and `SCHEMA`
   in `src/lib/db.ts` is the record-shape stamp. Bump it after changing a stored
-  shape and the next load wipes the data and reseeds the plan. A database left at
+  shape and the next *dev* load wipes the data and reseeds the plan. A database left at
   a higher version — or missing a store after a rename — is discarded on open,
   since stores can only be created during a version upgrade.
 - A matching stamp is never re-seeded, so deleting every group will not bring
