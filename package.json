@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name gym-tracker",
     "deploy:production": "npm run build && npx wrangler pages deploy dist --project-name gym-tracker --branch production",
-    "icons": "pwa-assets-generator && node -e \"require('sharp')('scripts/og.svg').png().toFile('public/og.png')\""
+    "icons": "pwa-assets-generator && node scripts/icons.mjs"
   },
   "dependencies": {
     "react": "^19.1.1",

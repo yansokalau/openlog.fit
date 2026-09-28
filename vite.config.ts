@@ -33,7 +33,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
-        globIgnores: ['og.png'],
+        globIgnores: ['og.png', 'icon.png'],
         // The app is a single-page shell; the landing page and 404 are their
         // own documents and must not fall back into it.
         navigateFallback: '/app/index.html',

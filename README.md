@@ -39,7 +39,9 @@ npm run dev
   `start_url` is `/app/`, and an installed copy that lands on `/` is sent there.
   Everything is precached, so both pages open offline; only `/app/*`
   navigations fall back to the app shell. Updates apply on the next load.
-- Icons are rendered from `public/favicon.svg`, and the share image from
+- App icons (manifest, maskable, Apple) are rendered from `public/icon.png`;
+  `favicon.ico` from `public/favicon.svg`, a separate design drawn for 16px;
+  and the share image from
   `scripts/og.svg`, by `npm run icons`. The PNGs are committed.
 - Cloudflare Pages: `public/_redirects` rewrites `/app/*` to the shell,
   `public/404.html` keeps unknown URLs real 404s rather than the landing page,
