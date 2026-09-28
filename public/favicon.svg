@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- A log of entries, with the one you have open marked in the accent. -->
+  <rect width="512" height="512" fill="#000000"/>
+  <rect x="128" y="136" width="256" height="48" fill="#ffffff"/>
+  <rect x="128" y="232" width="256" height="48" fill="#f5e401"/>
+  <rect x="128" y="328" width="176" height="48" fill="#ffffff"/>
+</svg>
