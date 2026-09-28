@@ -26,6 +26,29 @@ npm install
 npm run dev
 ```
 
+## Site and PWA
+
+- `/` is the landing page: static HTML in `index.html`, indexable, with the
+  meta, Open Graph and JSON-LD in the markup itself. `src/landing.ts` only wires
+  the install buttons, which stay hidden until the browser fires
+  `beforeinstallprompt` (iOS gets a Share → Add to Home Screen hint instead).
+- `/app/` is the app (`app/index.html` → `src/main.tsx`), marked `noindex` and
+  disallowed in `robots.txt`: it is device-local data with nothing to index.
+- The manifest and service worker come from `vite-plugin-pwa` in
+  `vite.config.ts`. Scope is `/` so the landing page can offer the install;
+  `start_url` is `/app/`, and an installed copy that lands on `/` is sent there.
+  Everything is precached, so both pages open offline; only `/app/*`
+  navigations fall back to the app shell. Updates apply on the next load.
+- App icons (manifest, maskable, Apple) are rendered from `public/icon.png`;
+  `favicon.ico` from `public/favicon.svg`, a separate design drawn for 16px;
+  and the share image from
+  `scripts/og.svg`, by `npm run icons`. The PNGs are committed.
+- Cloudflare Pages: `public/_redirects` rewrites `/app/*` to the shell,
+  `public/404.html` keeps unknown URLs real 404s rather than the landing page,
+  and `public/_headers` stops `sw.js` and the manifest being cached.
+- Moving the app from `/` to `/app/` keeps existing data: IndexedDB is per
+  origin, not per path.
+
 ## Structure
 
 - `src/lib/db.ts` — IndexedDB access (stores: `groups`, `trackers`, `entries`,

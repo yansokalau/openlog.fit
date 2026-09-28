@@ -3,18 +3,356 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>OpenLog</title>
+    <title>OpenLog — Free Workout Log App, Offline, No Account</title>
+    <meta
+      name="description"
+      content="OpenLog is a free, minimal workout log for lifts, runs, climbing and body measurements. Works offline, installs like an app, no sign-up — your data stays on your device."
+    />
+    <link rel="canonical" href="https://openlog.fit/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="OpenLog" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OpenLog" />
+    <meta property="og:url" content="https://openlog.fit/" />
+    <meta property="og:title" content="OpenLog — the workout log that stays out of your way" />
+    <meta
+      property="og:description"
+      content="Log lifts, runs, climbs and body measurements in a couple of taps. Free, offline, no account."
+    />
+    <meta property="og:image" content="https://openlog.fit/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "OpenLog",
+        "url": "https://openlog.fit/",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires a modern browser with IndexedDB",
+        "description": "A free, minimal workout and training log for lifts, runs, climbing and body measurements. Works offline and keeps data on your device.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is OpenLog free?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. There is no paid tier, no ads and no sign-up." }
+          },
+          {
+            "@type": "Question",
+            "name": "Where is my training data stored?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Only in your browser on your device. There is no server and no account, so nothing is uploaded anywhere." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work offline?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. After the first visit the whole app is cached, so it opens and logs in a basement gym with no signal." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I move my log to a new phone?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Export a backup file from the menu, send it to the new device, and import it there. Import replaces what was on the new device." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I install it on my phone?",
+            "acceptedAnswer": { "@type": "Answer", "text": "On Android or desktop Chrome, use the Install button. On iPhone, open the site in Safari, tap Share, then Add to Home Screen." }
+          }
+        ]
+      }
+    </script>
+
     <script>
-      // Apply theme before first paint to avoid a flash.
+      // Same theme source as the app, applied before first paint.
       try {
         var t = localStorage.getItem('ol-theme')
         if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
           document.documentElement.classList.add('dark')
       } catch (e) {}
     </script>
+    <script type="module" src="/src/landing.ts"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="mx-auto w-full max-w-5xl px-4">
+      <header class="flex items-center gap-4 border-b-2 border-ink py-3">
+        <a href="/" class="mr-auto text-lg font-bold uppercase tracking-[0.12em]">OpenLog</a>
+        <a
+          href="/app/"
+          class="inline-flex h-11 items-center border-2 border-ink px-4 text-sm font-medium transition-colors hover:bg-ink hover:text-paper"
+          >Open app</a
+        >
+      </header>
+
+      <main>
+        <!-- Hero -->
+        <section class="grid items-center gap-10 py-12 md:grid-cols-[1.1fr_1fr] md:py-20">
+          <div>
+            <p class="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-ink/60">
+              Workout &amp; training log
+            </p>
+            <h1 class="text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
+              The workout log that stays out of your way.
+            </h1>
+            <p class="mt-5 max-w-md text-lg text-ink/75">
+              Log lifts, runs, climbs and body measurements in a couple of taps. See what you did
+              last time before every set. Free, offline, no account.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="/app/"
+                class="inline-flex h-14 items-center justify-center border-2 border-ink bg-ink px-6 text-base font-medium uppercase tracking-wide text-paper transition-colors hover:bg-paper hover:text-ink"
+                >Start logging — free</a
+              >
+              <button
+                type="button"
+                data-install
+                hidden
+                class="inline-flex h-14 items-center justify-center border-2 border-ink bg-accent px-6 text-base font-medium uppercase tracking-wide text-accent-ink transition-colors hover:bg-paper hover:text-ink"
+              >
+                Install app
+              </button>
+            </div>
+            <p data-install-hint class="mt-3 text-sm text-ink/60" hidden></p>
+          </div>
+
+          <!-- A static likeness of the app, so the page shows the product
+               rather than describing it. -->
+          <figure aria-label="OpenLog on a phone: a Monday group with bench press open" class="mx-auto w-full max-w-sm">
+            <div class="mr-2 border-2 border-ink bg-paper p-4 shadow-[8px_8px_0_0_var(--ink)] sm:mr-0">
+              <div class="-mx-4 -mt-4 mb-4 flex items-center gap-2 border-b-2 border-ink px-4 py-3">
+                <span class="mr-auto font-bold uppercase tracking-[0.12em]">OpenLog</span>
+                <span class="border-2 border-ink px-2 py-1 text-[11px] font-medium uppercase tracking-wider">Today</span>
+              </div>
+              <p class="mb-2 text-sm font-bold uppercase tracking-[0.12em]">Monday Gym</p>
+              <ul class="space-y-2 text-left">
+                <li class="border-2 border-ink">
+                  <div class="flex items-center gap-3 bg-accent p-3 text-accent-ink">
+                    <span class="min-w-0 flex-1">
+                      <span class="block font-semibold">Bench press</span>
+                      <span class="mt-0.5 block text-sm tabular-nums">Last: 3 × 8 · 80 kg</span>
+                    </span>
+                    <span class="rotate-45 text-lg leading-none" aria-hidden="true">+</span>
+                  </div>
+                  <div class="space-y-2 border-t-2 border-ink p-3 text-sm tabular-nums">
+                    <div class="flex justify-between"><span>Set 1</span><span>82.5 kg × 8</span></div>
+                    <div class="flex justify-between"><span>Set 2</span><span>82.5 kg × 7</span></div>
+                    <div class="flex h-10 items-center justify-center border-2 border-ink bg-ink text-xs font-medium uppercase tracking-wider text-paper">
+                      Log set
+                    </div>
+                  </div>
+                </li>
+                <li class="flex items-center gap-3 border-2 border-ink p-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-semibold">Lat pulldown</span>
+                    <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Last: 3 × 10 · 60 kg</span>
+                  </span>
+                  <span class="text-lg leading-none" aria-hidden="true">+</span>
+                </li>
+                <li class="flex items-center gap-3 border-2 border-ink p-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="flex items-center gap-2 font-semibold"
+                      >Face pull
+                      <span class="border px-1.5 py-px text-[10px] font-medium uppercase tracking-[0.12em]">optional</span></span
+                    >
+                    <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Target: 2 × 12–15</span>
+                  </span>
+                  <span class="text-lg leading-none" aria-hidden="true">+</span>
+                </li>
+              </ul>
+            </div>
+          </figure>
+        </section>
+
+        <a href="#features" class="mx-auto mb-4 flex w-fit flex-col items-center text-[11px] font-bold uppercase tracking-[0.16em] text-ink/60 hover:text-ink">
+          See how it works
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" class="mt-1">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </a>
+
+        <!-- Perks -->
+        <ul class="grid grid-cols-2 border-2 border-ink text-center text-sm font-bold uppercase tracking-[0.12em] sm:grid-cols-4">
+          <li class="border-b-2 border-r-2 border-ink p-4 sm:border-b-0">Free forever</li>
+          <li class="border-b-2 border-ink p-4 sm:border-b-0 sm:border-r-2">No account</li>
+          <li class="border-r-2 border-ink p-4">Works offline</li>
+          <li class="p-4">Data stays on device</li>
+        </ul>
+
+        <!-- Features -->
+        <section id="features" class="scroll-mt-6 py-16">
+          <h2 class="text-3xl font-bold tracking-tight">Built for the set you're about to do</h2>
+          <p class="mt-3 max-w-xl text-ink/75">
+            No feeds, no streaks, no coaching upsell. Just your plan, what you did last time, and a
+            fast way to write down what you did today.
+          </p>
+          <div class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+            <article>
+              <h3 class="font-bold">Track anything by the session</h3>
+              <p class="mt-2 text-ink/75">
+                Strength, reps only, timed holds, cardio, bodyweight, body measurements or plain
+                counts. Pick a type and the log fits it.
+              </p>
+            </article>
+            <article>
+              <h3 class="font-bold">Last time, at a glance</h3>
+              <p class="mt-2 text-ink/75">
+                Every exercise shows your previous session's weights and reps, so progressive
+                overload is a glance, not a scroll.
+              </p>
+            </article>
+            <article>
+              <h3 class="font-bold">Machine taken? Swap it</h3>
+              <p class="mt-2 text-ink/75">
+                Keep alternatives for each exercise with their own targets. Switch in one tap and
+                keep the history comparable.
+              </p>
+            </article>
+            <article>
+              <h3 class="font-bold">Forgot to log? Backfill</h3>
+              <p class="mt-2 text-ink/75">
+                Change the day in the header and log into any past session. It turns yellow so you
+                never do it by accident.
+              </p>
+            </article>
+            <article>
+              <h3 class="font-bold">Kilograms or pounds</h3>
+              <p class="mt-2 text-ink/75">
+                Switch between metric and imperial any time. Nothing is rewritten, so your numbers
+                stay exact.
+              </p>
+            </article>
+            <article>
+              <h3 class="font-bold">Your data, your file</h3>
+              <p class="mt-2 text-ink/75">
+                Export your whole log as a backup file and import it on another device. No cloud
+                account in between.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="border-t-2 border-ink py-16">
+          <h2 class="text-3xl font-bold tracking-tight">Three steps, then just lift</h2>
+          <ol class="mt-10 grid gap-6 sm:grid-cols-3">
+            <li class="border-2 border-ink p-5">
+              <span class="text-sm font-bold tabular-nums text-ink/60">01</span>
+              <h3 class="mt-2 font-bold">Make a group</h3>
+              <p class="mt-2 text-ink/75">"Monday Gym", "Long run", "Body". Whatever you train together.</p>
+            </li>
+            <li class="border-2 border-ink p-5">
+              <span class="text-sm font-bold tabular-nums text-ink/60">02</span>
+              <h3 class="mt-2 font-bold">Add what you track</h3>
+              <p class="mt-2 text-ink/75">Bench press 3×6–8, 5 km in 25 min, waist. Targets are just notes to you.</p>
+            </li>
+            <li class="border-2 border-ink p-5">
+              <span class="text-sm font-bold tabular-nums text-ink/60">03</span>
+              <h3 class="mt-2 font-bold">Tap, log, move on</h3>
+              <p class="mt-2 text-ink/75">Open an exercise, adjust the numbers from last time, log the set.</p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- Install -->
+        <section id="install" class="border-t-2 border-ink py-16">
+          <h2 class="text-3xl font-bold tracking-tight">Install it like an app</h2>
+          <p class="mt-3 max-w-xl text-ink/75">
+            OpenLog installs straight from the browser. No app store, no download size to speak of,
+            and it opens full screen and offline from your home screen.
+          </p>
+          <div class="mt-8 grid gap-6 sm:grid-cols-3">
+            <div class="border-2 border-ink p-5">
+              <h3 class="font-bold">iPhone &amp; iPad</h3>
+              <p class="mt-2 text-ink/75">Open openlog.fit in Safari, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.</p>
+            </div>
+            <div class="border-2 border-ink p-5">
+              <h3 class="font-bold">Android</h3>
+              <p class="mt-2 text-ink/75">Tap <strong>Install app</strong> on this page, or <strong>⋮ → Install app</strong> in Chrome.</p>
+            </div>
+            <div class="border-2 border-ink p-5">
+              <h3 class="font-bold">Desktop</h3>
+              <p class="mt-2 text-ink/75">In Chrome or Edge, click the install icon at the right of the address bar.</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            data-install
+            hidden
+            class="mt-8 inline-flex h-14 items-center justify-center border-2 border-ink bg-accent px-6 text-base font-medium uppercase tracking-wide text-accent-ink transition-colors hover:bg-paper hover:text-ink"
+          >
+            Install app
+          </button>
+        </section>
+
+        <!-- FAQ -->
+        <section class="border-t-2 border-ink py-16">
+          <h2 class="text-3xl font-bold tracking-tight">Questions</h2>
+          <div class="mt-8 divide-y-2 divide-ink border-y-2 border-ink">
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between font-bold">
+                Is OpenLog free?<span class="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-ink/75">Yes. There is no paid tier, no ads and no sign-up.</p>
+            </details>
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between font-bold">
+                Where is my training data stored?<span class="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-ink/75">Only in your browser on your device. There is no server and no account, so nothing is uploaded anywhere.</p>
+            </details>
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between font-bold">
+                Does it work offline?<span class="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-ink/75">Yes. After the first visit the whole app is cached, so it opens and logs in a basement gym with no signal.</p>
+            </details>
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between font-bold">
+                How do I move my log to a new phone?<span class="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-ink/75">Export a backup file from the menu, send it to the new device, and import it there. Import replaces what was on the new device.</p>
+            </details>
+            <details class="group py-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between font-bold">
+                How do I install it on my phone?<span class="text-lg transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="mt-3 text-ink/75">On Android or desktop Chrome, use the Install button. On iPhone, open the site in Safari, tap Share, then Add to Home Screen.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- Closing CTA -->
+        <section class="mb-16 border-2 border-ink bg-ink px-6 py-12 text-center text-paper">
+          <h2 class="text-3xl font-bold tracking-tight">Your next set is waiting.</h2>
+          <p class="mx-auto mt-3 max-w-md text-paper/75">Starts with a ready-made plan you can rename, reorder or delete.</p>
+          <a
+            href="/app/"
+            class="mt-8 inline-flex h-14 items-center justify-center border-2 border-accent bg-accent px-6 text-base font-medium uppercase tracking-wide text-accent-ink transition-colors hover:bg-ink hover:text-paper"
+            >Start logging — free</a
+          >
+        </section>
+      </main>
+
+      <footer class="flex flex-wrap items-center gap-4 border-t-2 border-ink py-6 text-sm text-ink/60">
+        <span class="mr-auto font-bold uppercase tracking-[0.12em] text-ink">OpenLog</span>
+        <span>No account. No tracking. Your data stays on your device.</span>
+      </footer>
+    </div>
   </body>
 </html>
