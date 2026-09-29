@@ -101,11 +101,6 @@ export function AppMenu({
           </div>
 
           <div className="space-y-2 border-t-2 border-ink pt-3">
-            <Label>
-              Data · {plural(counts.trackers.length, 'tracker')} ·{' '}
-              {plural(counts.entries.length, 'entry', 'entries')}
-            </Label>
-
             <Button
               size="md"
               className="w-full"

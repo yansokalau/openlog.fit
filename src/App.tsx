@@ -28,114 +28,121 @@ export default function App() {
   return (
     <UnitContext.Provider value={system}>
       <ActiveDateContext.Provider value={active}>
-        <div className="mx-auto min-h-dvh w-full max-w-xl px-4 pb-16">
-          {/* Sticky as one piece: the day being logged into has to stay on
-              screen, and it now lives beside the wordmark. */}
-          <header className="sticky top-0 z-30 -mx-4 mb-6 flex items-center gap-2 border-b-2 border-ink bg-paper px-4 py-3">
-            <h1 className="mr-auto flex items-center gap-2 text-lg font-bold uppercase tracking-[0.12em]">
-              <LogoMark />
-              OpenLog
-            </h1>
-            <DatePicker
-              date={active.date}
-              isToday={active.isToday}
-              onChange={setPickedDate}
-            />
-            <AppMenu
-              theme={theme}
-              onTheme={setTheme}
-              system={system}
-              onSystem={setSystem}
-              snapshot={gym.snapshot}
-              onReplaceAll={gym.replaceAll}
-            />
+        <div className="min-h-dvh">
+          {/* Outside the content column so the bar spans the window, and
+              sticky as one piece: the day being logged into has to stay on
+              screen, and it lives beside the wordmark. */}
+          <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper">
+            {/* The bar spans the window and its contents run much wider than
+                the body — a toolbar, not a column heading. */}
+            <div className="mx-auto flex w-full max-w-[1440px] items-center gap-2 px-4 py-3">
+              <h1 className="mr-auto flex items-center gap-2 text-lg font-bold uppercase tracking-[0.12em]">
+                <LogoMark />
+                OpenLog
+              </h1>
+              <DatePicker
+                date={active.date}
+                isToday={active.isToday}
+                onChange={setPickedDate}
+              />
+              <AppMenu
+                theme={theme}
+                onTheme={setTheme}
+                system={system}
+                onSystem={setSystem}
+                snapshot={gym.snapshot}
+                onReplaceAll={gym.replaceAll}
+              />
+            </div>
           </header>
 
-          {!gym.ready ? (
-            <p className="text-sm text-ink/50">Loading…</p>
-          ) : (
-            // Scroll anchoring fights the deliberate scrolling below: collapsing
-          // a card shifts the page under the one just opened.
-          <main className="space-y-8 [overflow-anchor:none]">
-              {gym.groups.map((group, index) => (
-                <GroupSection
-                  key={group.id}
-                  group={group}
-                  trackers={gym.trackersByGroup.get(group.id) ?? []}
-                  entriesByTracker={gym.entriesByTracker}
-                  expandedId={expandedId}
-                  editingId={editingId}
-                  isFirstGroup={index === 0}
-                  isLastGroup={index === gym.groups.length - 1}
-                  onExpand={setExpandedId}
-                  onEditing={setEditingId}
-                  onRename={(name) => gym.renameGroup(group.id, name)}
-                  onRemove={() => gym.removeGroup(group.id)}
-                  onMove={(direction) => gym.moveGroup(group.id, direction)}
-                  onAddTracker={(values) => gym.addTracker(group.id, values)}
-                  onUpdateTracker={(id, values) =>
-                    gym.updateTracker(id, values)
-                  }
-                  onRemoveTracker={(id) => gym.removeTracker(id)}
-                  onMoveTracker={(id, direction) =>
-                    gym.moveTracker(id, direction)
-                  }
-                  onLog={(id, variant, values) =>
-                    gym.logEntry(id, variant, values, pickedDate)
-                  }
-                  onRemoveEntry={(id) => gym.removeEntry(id)}
-                />
-              ))}
-
-              {gym.groups.length === 0 && (
-                <p className="text-sm text-ink/50">
-                  Nothing here yet. Add your first group below.
-                </p>
-              )}
-
-              {addingGroup ? (
-                <form
-                  className="flex gap-2"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (!groupName.trim()) return;
-                    gym.addGroup(groupName);
-                    setGroupName("");
-                    setAddingGroup(false);
-                  }}
-                >
-                  <Input
-                    value={groupName}
-                    onChange={(e) => setGroupName(e.target.value)}
-                    placeholder="Monday Gym, Climbing, Body…"
-                    aria-label="New group name"
-                    autoFocus
+          <div className="mx-auto w-full max-w-xl px-4 pb-16 pt-6">
+            {!gym.ready ? (
+              <p className="text-sm text-ink/50">Loading…</p>
+            ) : (
+              // Scroll anchoring fights the deliberate scrolling below: collapsing
+              // a card shifts the page under the one just opened.
+              <main className="space-y-8 [overflow-anchor:none]">
+                {gym.groups.map((group, index) => (
+                  <GroupSection
+                    key={group.id}
+                    group={group}
+                    trackers={gym.trackersByGroup.get(group.id) ?? []}
+                    entriesByTracker={gym.entriesByTracker}
+                    expandedId={expandedId}
+                    editingId={editingId}
+                    isFirstGroup={index === 0}
+                    isLastGroup={index === gym.groups.length - 1}
+                    onExpand={setExpandedId}
+                    onEditing={setEditingId}
+                    onRename={(name) => gym.renameGroup(group.id, name)}
+                    onRemove={() => gym.removeGroup(group.id)}
+                    onMove={(direction) => gym.moveGroup(group.id, direction)}
+                    onAddTracker={(values) => gym.addTracker(group.id, values)}
+                    onUpdateTracker={(id, values) =>
+                      gym.updateTracker(id, values)
+                    }
+                    onRemoveTracker={(id) => gym.removeTracker(id)}
+                    onMoveTracker={(id, direction) =>
+                      gym.moveTracker(id, direction)
+                    }
+                    onLog={(id, variant, values) =>
+                      gym.logEntry(id, variant, values, pickedDate)
+                    }
+                    onRemoveEntry={(id) => gym.removeEntry(id)}
                   />
-                  <Button type="submit" variant="solid" size="md">
-                    Add
-                  </Button>
-                  <Button
-                    size="md"
-                    onClick={() => {
+                ))}
+
+                {gym.groups.length === 0 && (
+                  <p className="text-sm text-ink/50">
+                    Nothing here yet. Add your first group below.
+                  </p>
+                )}
+
+                {addingGroup ? (
+                  <form
+                    className="flex gap-2"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!groupName.trim()) return;
+                      gym.addGroup(groupName);
                       setGroupName("");
                       setAddingGroup(false);
                     }}
                   >
-                    Cancel
+                    <Input
+                      value={groupName}
+                      onChange={(e) => setGroupName(e.target.value)}
+                      placeholder="Monday Gym, Climbing, Body…"
+                      aria-label="New group name"
+                      autoFocus
+                    />
+                    <Button type="submit" variant="solid" size="md">
+                      Add
+                    </Button>
+                    <Button
+                      size="md"
+                      onClick={() => {
+                        setGroupName("");
+                        setAddingGroup(false);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </form>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full"
+                    onClick={() => setAddingGroup(true)}
+                  >
+                    + Add group
                   </Button>
-                </form>
-              ) : (
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                  onClick={() => setAddingGroup(true)}
-                >
-                  + Add group
-                </Button>
-              )}
-            </main>
-          )}
+                )}
+              </main>
+            )}
+          </div>
         </div>
       </ActiveDateContext.Provider>
     </UnitContext.Provider>
