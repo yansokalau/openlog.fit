@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppMenu } from "./components/AppMenu";
 import { DatePicker } from "./components/DatePicker";
 import { GroupSection } from "./components/GroupSection";
+import { LogoMark } from "./components/icons";
 import { Button, Input } from "./components/ui";
 import { useGym } from "./lib/store";
 import { useTheme } from "./lib/theme";
@@ -31,7 +32,8 @@ export default function App() {
           {/* Sticky as one piece: the day being logged into has to stay on
               screen, and it now lives beside the wordmark. */}
           <header className="sticky top-0 z-30 -mx-4 mb-6 flex items-center gap-2 border-b-2 border-ink bg-paper px-4 py-3">
-            <h1 className="mr-auto text-lg font-bold uppercase tracking-[0.12em]">
+            <h1 className="mr-auto flex items-center gap-2 text-lg font-bold uppercase tracking-[0.12em]">
+              <LogoMark />
               OpenLog
             </h1>
             <DatePicker

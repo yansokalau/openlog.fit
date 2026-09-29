@@ -100,3 +100,29 @@ export function MoonIcon(props: IconProps) {
     </Icon>
   )
 }
+
+/**
+ * The figure from the app icon, drawn in `currentColor` so it takes the ink of
+ * the theme: black on white, white on black. The viewBox is cropped to the
+ * drawing so it sits level with the wordmark.
+ */
+export function LogoMark({ size = 28, className }: IconProps) {
+  return (
+    <svg
+      viewBox="6 9 52 46"
+      height={size}
+      width={(size * 52) / 46}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={3}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <path d="M25.2532 32.3C22.0848 27.64 20.8845 24.9531 20 20M25.2532 32.3C27.2757 36.0884 27.9848 38.2681 28.1373 42.3M25.2532 32.3C26.4335 31.9086 27.4979 31.5998 28.5 31.3778M38.7468 32.3C41.9441 27.8957 43.4259 25.3182 44 20M38.7468 32.3C36.6788 35.7903 36.0726 38.0022 35.7597 42.3M38.7468 32.3C37.6003 31.903 36.5639 31.5967 35.5913 31.3778M28.1373 42.3C31.3179 43.4338 33.0236 43.6382 35.7597 42.3M28.1373 42.3C25.861 45.5768 25.0516 47.7515 24.1202 52M35.7597 42.3C38.3183 45.3886 39.2452 47.5282 40.0858 52" />
+      <circle cx="32" cy="29" r="4" />
+      <path d="M14.6255 12H48.255L56 16.1081L48.255 20H14.6255M48.255 12C46.6685 15.1245 46.6398 16.8755 48.255 20M14.6255 12H8.91866C7.66171 15.1243 7.72627 16.8759 8.91866 20H14.6255M14.6255 12V20" />
+    </svg>
+  )
+}
