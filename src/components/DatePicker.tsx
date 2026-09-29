@@ -61,7 +61,7 @@ export function DatePicker({
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 z-30 w-64 border-2 border-ink bg-paper p-3">
+        <div className="absolute right-0 top-11 z-30 w-64 border-2 border-ink bg-paper p-3 shadow-[4px_4px_0_0_var(--ink)]">
           <Label>Recent</Label>
           <div className="mb-3 flex flex-wrap gap-2">
             {recentDays(7).map((day) => (

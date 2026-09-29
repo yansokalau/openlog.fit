@@ -91,7 +91,7 @@ export function AppMenu({
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 z-30 w-72 space-y-4 border-2 border-ink bg-paper p-3">
+        <div className="absolute right-0 top-11 z-30 w-72 space-y-4 border-2 border-ink bg-paper p-3 shadow-[4px_4px_0_0_var(--ink)]">
           <div>
             <Label>Display</Label>
             <div className="flex gap-2">
