@@ -2,6 +2,36 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Expanding panels. A transition needs the browser to have painted the start
+ * value first, which never happens for an element being inserted — so opening
+ * would jump while closing animated. Keyframes have their own start value and
+ * run on insert, so both directions behave the same.
+ */
+@keyframes panel-open {
+  from {
+    grid-template-rows: 0fr;
+  }
+  to {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes panel-close {
+  from {
+    grid-template-rows: 1fr;
+  }
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-panel] {
+    animation-duration: 1ms !important;
+  }
+}
+
 :root {
   --paper: #ffffff;
   --ink: #000000;
