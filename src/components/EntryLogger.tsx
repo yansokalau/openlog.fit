@@ -1,8 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
-import { fieldLabel, formatEntry, toCanonical, toDisplay, unitSpec } from '../lib/fields'
-import type { Entry, Field, LogStyle } from '../lib/types'
-import { useUnits } from '../lib/units'
-import { Button, Label } from './ui'
+import { useEffect, useRef, useState } from "react";
+import {
+  fieldLabel,
+  formatEntry,
+  toCanonical,
+  toDisplay,
+  unitSpec,
+} from "../lib/fields";
+import type { Entry, Field, LogStyle } from "../lib/types";
+import { useUnits } from "../lib/units";
+import { BURST_MS, LogBurst } from "./LogBurst";
+import { Button, Label } from "./ui";
 
 /**
  * Logs one entry against the selected variant. One big stepper per field, so a
@@ -21,101 +28,133 @@ export function EntryLogger({
   onLog,
   onRemoveEntry,
 }: {
-  fields: Field[]
-  logStyle: LogStyle
+  fields: Field[];
+  logStyle: LogStyle;
   /** Labels the stepper when a tracker logs a single unnamed value. */
-  name: string
+  name: string;
   /** The day being logged into: "Today", "Yesterday", "Sat 6 Mar". */
-  dateLabel: string
-  todayEntries: Entry[]
+  dateLabel: string;
+  todayEntries: Entry[];
   /** Variants of this tracker logged today that aren't on screen. */
-  alsoToday?: string
+  alsoToday?: string;
   /** Canonical values to start from, keyed by field. */
-  defaults: Record<string, number>
+  defaults: Record<string, number>;
   /** Earlier sessions for this variant, newest first. */
-  history: { date: string; entries: Entry[] }[]
-  onLog: (values: Record<string, number>) => void
-  onRemoveEntry: (id: string) => void
+  history: { date: string; entries: Entry[] }[];
+  onLog: (values: Record<string, number>) => void;
+  onRemoveEntry: (id: string) => void;
 }) {
-  const system = useUnits()
+  const system = useUnits();
 
   // Held in display units while editing, converted on log.
   const [values, setValues] = useState<Record<string, number>>(() =>
     Object.fromEntries(
-      fields.map((field) => [field.key, toDisplay(field, defaults[field.key] ?? 0, system)]),
-    ),
-  )
+      fields.map((field) => [
+        field.key,
+        toDisplay(field, defaults[field.key] ?? 0, system),
+      ])
+    )
+  );
 
   // Flipping kg↔lb must not reinterpret what is already on the steppers: the
   // physical quantity is held, the number it is shown as changes.
-  const previous = useRef(system)
+  const previous = useRef(system);
   useEffect(() => {
-    const from = previous.current
-    if (from === system) return
-    previous.current = system
+    const from = previous.current;
+    if (from === system) return;
+    previous.current = system;
     setValues((prev) =>
       Object.fromEntries(
         fields.map((field) => [
           field.key,
-          toDisplay(field, toCanonical(field, prev[field.key] ?? 0, from), system),
-        ]),
-      ),
-    )
-  }, [fields, system])
+          toDisplay(
+            field,
+            toCanonical(field, prev[field.key] ?? 0, from),
+            system
+          ),
+        ])
+      )
+    );
+  }, [fields, system]);
 
-  const noun = logStyle === 'sets' ? { one: 'set', many: 'sets' } : { one: 'entry', many: 'entries' }
+  // Keyed by a counter so tapping again restarts the burst mid-flight.
+  const [burst, setBurst] = useState(0);
+
+  useEffect(() => {
+    if (burst === 0) return;
+    // Outlives the animation by a frame or two, never cutting it short.
+    const timer = window.setTimeout(() => setBurst(0), BURST_MS + 100);
+    return () => window.clearTimeout(timer);
+  }, [burst]);
+
+  const noun =
+    logStyle === "sets"
+      ? { one: "set", many: "sets" }
+      : { one: "entry", many: "entries" };
 
   return (
     <div className="space-y-3">
       {fields.map((field) => {
-        const { step, decimals } = unitSpec(field, system)
-        const value = values[field.key] ?? 0
+        const { step, decimals } = unitSpec(field, system);
+        const value = values[field.key] ?? 0;
         // Reads from `prev`, never the rendered value: taps in quick succession
         // are batched by React and would otherwise all start from the same one.
         const nudge = (by: number) =>
           setValues((prev) => ({
             ...prev,
-            [field.key]: Math.max(0, round((prev[field.key] ?? 0) + by, decimals)),
-          }))
+            [field.key]: Math.max(
+              0,
+              round((prev[field.key] ?? 0) + by, decimals)
+            ),
+          }));
 
         return (
           <Stepper
             key={field.key}
-            label={fieldLabel(field, system, fields.length === 1 ? name : undefined)}
+            label={fieldLabel(
+              field,
+              system,
+              fields.length === 1 ? name : undefined
+            )}
             value={String(value)}
             onDec={() => nudge(-step)}
             onInc={() => nudge(step)}
             onChange={(raw) => {
-              const next = Number(raw.replace(',', '.'))
+              const next = Number(raw.replace(",", "."));
               if (Number.isFinite(next) && next >= 0) {
-                setValues((prev) => ({ ...prev, [field.key]: next }))
+                setValues((prev) => ({ ...prev, [field.key]: next }));
               }
             }}
           />
-        )
+        );
       })}
 
-      <Button
-        variant="solid"
-        size="lg"
-        className="w-full"
-        onClick={() =>
-          onLog(
-            Object.fromEntries(
-              fields.map((field) => [
-                field.key,
-                toCanonical(field, values[field.key] ?? 0, system),
-              ]),
-            ),
-          )
-        }
-      >
-        Log {noun.one}
-      </Button>
+      <div className="relative">
+        <Button
+          variant="solid"
+          size="lg"
+          className="w-full"
+          onClick={() => {
+            onLog(
+              Object.fromEntries(
+                fields.map((field) => [
+                  field.key,
+                  toCanonical(field, values[field.key] ?? 0, system),
+                ])
+              )
+            );
+            setBurst((n) => n + 1);
+          }}
+        >
+          Log {noun.one}
+        </Button>
+        {burst > 0 && <LogBurst key={burst} />}
+      </div>
 
       <div>
         <Label>
-          {dateLabel} · {todayEntries.length} {todayEntries.length === 1 ? noun.one : noun.many}
+          {dateLabel} · {todayEntries.length}{" "}
+          {todayEntries.length === 1 ? noun.one : noun.many}
         </Label>
         {todayEntries.length === 0 ? (
           <p className="text-sm text-ink/50">Nothing logged yet.</p>
@@ -151,23 +190,28 @@ export function EntryLogger({
           <Label>Earlier</Label>
           <ul className="space-y-1">
             {history.map((session) => (
-              <li key={session.date} className="text-sm tabular-nums text-ink/60">
-                <span className="font-semibold text-ink/80">{session.date}:</span>{' '}
+              <li
+                key={session.date}
+                className="text-sm tabular-nums text-ink/60"
+              >
+                <span className="font-semibold text-ink/80">
+                  {session.date}:
+                </span>{" "}
                 {session.entries
                   .map((entry) => formatEntry(fields, entry.values, system))
-                  .join(', ')}
+                  .join(", ")}
               </li>
             ))}
           </ul>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function round(value: number, decimals: number): number {
-  const factor = 10 ** Math.max(decimals, 2)
-  return Math.round(value * factor) / factor
+  const factor = 10 ** Math.max(decimals, 2);
+  return Math.round(value * factor) / factor;
 }
 
 function Stepper({
@@ -177,16 +221,16 @@ function Stepper({
   onInc,
   onChange,
 }: {
-  label: string
-  value: string
-  onDec: () => void
-  onInc: () => void
-  onChange: (raw: string) => void
+  label: string;
+  value: string;
+  onDec: () => void;
+  onInc: () => void;
+  onChange: (raw: string) => void;
 }) {
   // While the field has focus the raw text is kept as typed, so intermediate
   // values like "62." survive; otherwise it mirrors the parsed value.
-  const [draft, setDraft] = useState(value)
-  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(value);
+  const [editing, setEditing] = useState(false);
 
   return (
     <div>
@@ -205,14 +249,14 @@ function Stepper({
           inputMode="decimal"
           aria-label={label}
           onFocus={(e) => {
-            setDraft(value)
-            setEditing(true)
-            e.currentTarget.select()
+            setDraft(value);
+            setEditing(true);
+            e.currentTarget.select();
           }}
           onBlur={() => setEditing(false)}
           onChange={(e) => {
-            setDraft(e.target.value)
-            onChange(e.target.value)
+            setDraft(e.target.value);
+            onChange(e.target.value);
           }}
           className="h-16 w-full text-center text-3xl font-semibold tabular-nums"
         />
@@ -226,5 +270,5 @@ function Stepper({
         </button>
       </div>
     </div>
-  )
+  );
 }

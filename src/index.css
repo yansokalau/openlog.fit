@@ -26,9 +26,44 @@
   }
 }
 
+/*
+ * The burst on logging a set. White with `difference` inverts whatever is
+ * under each ray, so they show against the black button and the page alike.
+ */
+@keyframes spark {
+  from {
+    transform: rotate(var(--angle)) translateY(0) scaleY(1);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(var(--angle)) translateY(calc(var(--travel) * -1)) scaleY(0.45);
+    opacity: 0;
+  }
+}
+
+.spark {
+  position: absolute;
+  width: var(--spark-w);
+  height: var(--len);
+  /* Centred on its own point on the ellipse, wherever that lands. */
+  margin: calc(var(--len) / -2) 0 0 calc(var(--spark-w) / -2);
+  background: #fff;
+  mix-blend-mode: difference;
+  /* Duration comes from BURST_MS in LogBurst.tsx, so one number governs both
+     the animation and how long the burst stays mounted. */
+  animation-name: spark;
+  animation-duration: var(--burst-ms);
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-panel] {
     animation-duration: 1ms !important;
+  }
+
+  .spark {
+    display: none;
   }
 }
 
