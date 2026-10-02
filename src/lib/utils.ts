@@ -150,3 +150,14 @@ export function relativeDay(date: string): string {
   const [y, m, d] = date.split('-').map(Number)
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
 }
+
+/**
+ * Archiving is a move, not a flag: a tracker goes into a group of this name,
+ * created on demand, and keeps working exactly as it did. Matched by name
+ * rather than by id so a group the user made themselves counts as the archive.
+ */
+export const ARCHIVE_GROUP = 'Archive'
+
+export function isArchiveGroup(name: string): boolean {
+  return name.trim().toLowerCase() === ARCHIVE_GROUP.toLowerCase()
+}

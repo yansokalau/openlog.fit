@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { STICKY_CLEARANCE, bringIntoView } from '../lib/scroll'
 import type { Entry, Group, Tracker, Variant } from '../lib/types'
-import { uid } from '../lib/utils'
+import { isArchiveGroup, uid } from '../lib/utils'
 import { ArrowIcon, PencilIcon, TrashIcon } from './icons'
 import { TrackerForm, type TrackerValues } from './TrackerForm'
 import { TrackerItem } from './TrackerItem'
@@ -23,6 +23,7 @@ export function GroupSection({
   onAddTracker,
   onUpdateTracker,
   onRemoveTracker,
+  onArchiveTracker,
   onMoveTracker,
   onLog,
   onRemoveEntry,
@@ -43,6 +44,7 @@ export function GroupSection({
   onAddTracker: (values: TrackerValues) => void
   onUpdateTracker: (id: string, values: TrackerValues) => void
   onRemoveTracker: (id: string) => void
+  onArchiveTracker: (id: string) => void
   onMoveTracker: (id: string, direction: -1 | 1) => void
   onLog: (trackerId: string, variant: Variant, values: Record<string, number>) => void
   onRemoveEntry: (id: string) => void
@@ -201,6 +203,7 @@ export function GroupSection({
             onEditingChange={(next) => onEditing(next ? tracker.id : null)}
             onUpdate={(values) => onUpdateTracker(tracker.id, values)}
             onRemove={() => onRemoveTracker(tracker.id)}
+            onArchive={isArchiveGroup(group.name) ? null : () => onArchiveTracker(tracker.id)}
             onLog={(variant, values) => onLog(tracker.id, variant, values)}
             onRemoveEntry={onRemoveEntry}
           />

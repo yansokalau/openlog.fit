@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as db from "./db";
-import { seedPlan } from "./seed";
 import type { Entry, Group, Tracker, Variant } from "./types";
-import { dateKey, uid } from "./utils";
+import { ARCHIVE_GROUP, dateKey, isArchiveGroup, uid } from "./utils";
 
 export function useGym() {
   const [groups, setGroups] = useState<Group[]>([]);
@@ -14,12 +13,9 @@ export function useGym() {
     let cancelled = false;
 
     (async () => {
-      // Local development starts from the sample plan, so there is always
-      // something to look at. A deployed build never seeds — and so never runs
-      // the SCHEMA wipe that goes with it, which would take real data with it.
-      // The branch is constant-folded away in production, taking the seed with
-      // it.
-      // if (import.meta.env.DEV) await db.ensureSchema(seedPlan);
+      // Seeding is off: re-enable with
+      //   if (import.meta.env.DEV) await db.ensureSchema(seedPlan)
+      // and re-import seedPlan. Dev only — ensureSchema wipes on a SCHEMA bump.
 
       const data = await db.loadAll();
 
@@ -158,6 +154,44 @@ export function useGym() {
     setEntries((prev) => prev.filter((e) => e.trackerId !== id));
     await db.removeTrackerCascade(id);
   }, []);
+
+  /**
+   * Archiving is an ordinary move: the tracker lands at the end of a group
+   * named "Archive", created at the bottom of the plan the first time one is
+   * needed. Nothing about the tracker changes — it is still logged, edited and
+   * moved back out the same way — so there is no archived state to maintain.
+   */
+  const archiveTracker = useCallback(
+    async (id: string) => {
+      const tracker = trackers.find((t) => t.id === id);
+      if (!tracker) return;
+
+      const existing = groups.find((g) => isArchiveGroup(g.name));
+      const archive: Group = existing ?? {
+        id: uid(),
+        name: ARCHIVE_GROUP,
+        order: groups.reduce((max, g) => Math.max(max, g.order), -1) + 1,
+      };
+      if (tracker.groupId === archive.id) return;
+
+      const moved: Tracker = {
+        ...tracker,
+        groupId: archive.id,
+        order:
+          trackers
+            .filter((t) => t.groupId === archive.id)
+            .reduce((max, t) => Math.max(max, t.order), -1) + 1,
+      };
+
+      if (!existing) {
+        setGroups((prev) => [...prev, archive]);
+        await db.put(db.STORES.groups, archive);
+      }
+      setTrackers((prev) => prev.map((t) => (t.id === id ? moved : t)));
+      await db.put(db.STORES.trackers, moved);
+    },
+    [groups, trackers]
+  );
 
   /**
    * Moves a tracker one step through the plan read top to bottom: past its
@@ -322,6 +356,7 @@ export function useGym() {
     updateTracker,
     removeTracker,
     moveTracker,
+    archiveTracker,
     logEntry,
     removeEntry,
     snapshot,

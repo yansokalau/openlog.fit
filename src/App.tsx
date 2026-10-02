@@ -83,6 +83,7 @@ export default function App() {
                       gym.updateTracker(id, values)
                     }
                     onRemoveTracker={(id) => gym.removeTracker(id)}
+                    onArchiveTracker={(id) => gym.archiveTracker(id)}
                     onMoveTracker={(id, direction) =>
                       gym.moveTracker(id, direction)
                     }

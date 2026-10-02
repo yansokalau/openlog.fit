@@ -4,13 +4,20 @@ import { presetOf } from "../lib/presets";
 import { STICKY_CLEARANCE, bringIntoView } from "../lib/scroll";
 import type { Entry, Tracker, Variant } from "../lib/types";
 import { useUnits, type UnitSystem } from "../lib/units";
-import { activeDayLabel, daysAgo, lastSession, shortDate } from "../lib/utils";
+import {
+  ARCHIVE_GROUP,
+  activeDayLabel,
+  daysAgo,
+  lastSession,
+  shortDate,
+} from "../lib/utils";
 import { EntryLogger } from "./EntryLogger";
 import {
   TrackerForm,
   type MoveControls,
   type TrackerValues,
 } from "./TrackerForm";
+import { TrashIcon } from "./icons";
 import { Button, Select, Tag } from "./ui";
 
 /** How long the panel takes to open or close, in ms. */
@@ -26,6 +33,7 @@ export function TrackerItem({
   onEditingChange,
   onUpdate,
   onRemove,
+  onArchive,
   onLog,
   onRemoveEntry,
 }: {
@@ -38,10 +46,14 @@ export function TrackerItem({
   onEditingChange: (editing: boolean) => void;
   onUpdate: (values: TrackerValues) => void;
   onRemove: () => void;
+  /** Null inside the archive itself, where there is nowhere to archive to. */
+  onArchive: (() => void) | null;
   onLog: (variant: Variant, values: Record<string, number>) => void;
   onRemoveEntry: (id: string) => void;
 }) {
-  const [confirming, setConfirming] = useState(false);
+  const [confirming, setConfirming] = useState<"remove" | "archive" | null>(
+    null
+  );
 
   /**
    * Two flags rather than one: `mounted` keeps the panel in the DOM while it
@@ -140,7 +152,8 @@ export function TrackerItem({
   }
 
   // Sessions before the one being logged into, newest first — the same numbers
-  // the chips show, but for the days already done.
+  // the chips show, but for the days already done. All of them: the logger
+  // decides how many to list and folds the rest away.
   const history = Object.entries(
     selectedEntries
       .filter((e) => e.date < today)
@@ -149,9 +162,7 @@ export function TrackerItem({
         (byDate[entry.date] ??= []).push(entry);
         return byDate;
       }, {})
-  )
-    .sort(([a], [b]) => (a < b ? 1 : -1))
-    .slice(0, 5);
+  ).sort(([a], [b]) => (a < b ? 1 : -1));
 
   // A move can carry the open editor into another group, far from the viewport.
   useEffect(() => {
@@ -341,21 +352,46 @@ export function TrackerItem({
 
               {confirming ? (
                 <div className="flex items-center gap-2">
-                  <span className="mr-auto text-sm">Remove this tracker?</span>
-                  <Button size="sm" variant="solid" onClick={onRemove}>
-                    Remove
+                  <span className="mr-auto text-sm">
+                    {confirming === "remove"
+                      ? "Remove this tracker and its history?"
+                      : `Move to ${ARCHIVE_GROUP}?`}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="solid"
+                    onClick={() => {
+                      if (confirming === "remove") onRemove();
+                      else onArchive?.();
+                      setConfirming(null);
+                    }}
+                  >
+                    {confirming === "remove" ? "Remove" : "Archive"}
                   </Button>
-                  <Button size="sm" onClick={() => setConfirming(false)}>
-                    Keep
+                  <Button size="sm" onClick={() => setConfirming(null)}>
+                    Cancel
                   </Button>
                 </div>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <Button size="sm" onClick={() => onEditingChange(true)}>
                     Edit
                   </Button>
-                  <Button size="sm" onClick={() => setConfirming(true)}>
-                    Remove
+                  {onArchive && (
+                    <Button size="sm" onClick={() => setConfirming("archive")}>
+                      Archive
+                    </Button>
+                  )}
+                  {/* Apart from the others, and the only one here that loses
+                      data — archiving is the move you almost always want. */}
+                  <Button
+                    size="sm"
+                    aria-label="Remove this tracker"
+                    title="Remove tracker"
+                    className="ml-auto w-8 !px-0"
+                    onClick={() => setConfirming("remove")}
+                  >
+                    <TrashIcon />
                   </Button>
                 </div>
               )}
