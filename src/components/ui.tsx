@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react
 import { ChevronDownIcon } from './icons'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'outline' | 'solid' | 'ghost' | 'dashed'
+  variant?: 'outline' | 'solid' | 'ghost' | 'dashed' | 'link'
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -11,6 +11,9 @@ const VARIANTS: Record<NonNullable<ButtonProps['variant']>, string> = {
   solid: 'border-2 border-ink bg-ink text-paper hover:bg-paper hover:text-ink',
   ghost: 'border-2 border-transparent text-ink hover:border-ink',
   dashed: 'border-2 border-dashed border-ink/50 text-ink hover:border-ink hover:bg-ink/5',
+  // No box of its own, so it sits flush with the text above it rather than
+  // hanging off the edge of a list.
+  link: 'text-sm text-ink/60 underline underline-offset-4 hover:text-ink',
 }
 
 const SIZES: Record<NonNullable<ButtonProps['size']>, string> = {
@@ -20,10 +23,14 @@ const SIZES: Record<NonNullable<ButtonProps['size']>, string> = {
 }
 
 export function Button({ variant = 'outline', size = 'md', className = '', ...rest }: ButtonProps) {
+  // A link takes no size: the padding and fixed height are what make the others
+  // buttons, and they are exactly what would push it out of alignment.
+  const sizing = variant === 'link' ? '' : SIZES[size]
+
   return (
     <button
       type="button"
-      className={`inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:pointer-events-none disabled:opacity-30 ${VARIANTS[variant]} ${SIZES[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 font-medium transition-colors disabled:pointer-events-none disabled:opacity-30 ${VARIANTS[variant]} ${sizing} ${className}`}
       {...rest}
     />
   )

@@ -11,6 +11,9 @@ import { useUnits } from "../lib/units";
 import { BURST_MS, LogBurst } from "./LogBurst";
 import { Button, Label } from "./ui";
 
+/** Sessions listed under "Earlier" before the rest fold away. */
+const HISTORY_SHOWN = 7;
+
 /**
  * Logs one entry against the selected variant. One big stepper per field, so a
  * lift shows weight and reps while a measurement shows a single value — the
@@ -86,6 +89,15 @@ export function EntryLogger({
     const timer = window.setTimeout(() => setBurst(0), BURST_MS + 100);
     return () => window.clearTimeout(timer);
   }, [burst]);
+
+  const [showAll, setShowAll] = useState(false);
+
+  // A single extra session isn't worth a button to reveal it, so the tail only
+  // collapses once there are at least two behind it.
+  const hidden = history.length - HISTORY_SHOWN;
+  const collapsible = hidden >= 2;
+  const shownHistory =
+    collapsible && !showAll ? history.slice(0, HISTORY_SHOWN) : history;
 
   const noun =
     logStyle === "sets"
@@ -189,7 +201,7 @@ export function EntryLogger({
         <div>
           <Label>Earlier</Label>
           <ul className="space-y-1">
-            {history.map((session) => (
+            {shownHistory.map((session) => (
               <li
                 key={session.date}
                 className="text-sm tabular-nums text-ink/60"
@@ -203,6 +215,15 @@ export function EntryLogger({
               </li>
             ))}
           </ul>
+          {collapsible && (
+            <Button
+              variant="link"
+              className="mt-2"
+              onClick={() => setShowAll((v) => !v)}
+            >
+              {showAll ? "Show less" : `Show ${hidden} more`}
+            </Button>
+          )}
         </div>
       )}
     </div>
