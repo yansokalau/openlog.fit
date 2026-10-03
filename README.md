@@ -3,7 +3,8 @@
 **openlog.fit** — a minimal tracker for anything you log by the session: lifts,
 runs, climbing, body measurements. React + Vite + Tailwind v4, black-and-white plus a single
 yellow accent, with a light/dark switch. All data lives in the browser's
-IndexedDB (`openlog`); there is no backend.
+IndexedDB (`openlog`). The only server code is the AI plan builder's one
+stateless endpoint; the log itself never leaves the device.
 
 ## Model
 
@@ -76,6 +77,63 @@ npm run dev
 - `src/components/` — group sections, tracker rows, the entry logger, and the
   header menu holding display settings and the data actions.
 
+## AI plan builder
+
+The builder is the empty plan's screen and the only way in: generating a new
+plan means clearing the old one first (`⋯ → Clear everything`), so a generated
+plan never has anything to merge with or replace. Two paths feed one endpoint:
+**I have a program** (paste text and/or drop `.txt`, `.csv`, `.json` files) and
+**Build one for me** (free text first, then optional quiz answers). The result
+is previewed, then used as the plan. Skipping the builder shows the empty plan,
+which links back to it.
+
+- `functions/api/plan.ts` — Cloudflare Pages Function, `POST /api/plan`. Calls
+  OpenAI Chat Completions with a strict JSON schema, so the response always has
+  the plan's shape. Nothing is stored. Model is `OPENAI_MODEL` (default
+  `gpt-5-mini`; any model with structured outputs works).
+- `src/lib/planSchema.ts` — request/response types and the JSON schema, shared
+  by the endpoint and the client so they cannot drift. The preset enum and the
+  prompt's preset guide both come from `presets.ts`.
+- `src/lib/aiPlan.ts` — file reading, the fetch, and `toRecords`, which assigns
+  ids and orders and drops anything empty before it reaches IndexedDB.
+- A dropped `.json` that is an OpenLog backup is offered as a restore instead of
+  being sent to the model.
+- Files are read as text and sent as-is; parsing CSV or JSON is the model's job.
+
+Local development runs the function beside Vite, which proxies `/api` to it:
+
+```bash
+cp .dev.vars.example .dev.vars   # add OPENAI_API_KEY
+npm run dev:api                  # wrangler pages dev on :8788
+npm run dev
+```
+
+Every request carries a Cloudflare Turnstile token, checked by the function
+before anything reaches OpenAI (`src/lib/turnstile.ts`). The widget is
+invisible unless Cloudflare wants a click, and its script loads only when the
+builder opens, so the rest of the app stays offline-capable. It is off in
+local dev: `npm run dev` never loads it, and the function skips the check when
+`.dev.vars` sets `SKIP_TURNSTILE` and the request is for localhost. The site
+key lives in `.env.production`; production needs the secrets:
+
+```bash
+npx wrangler pages secret put OPENAI_API_KEY --project-name gym-tracker
+npx wrangler pages secret put TURNSTILE_SECRET --project-name gym-tracker
+```
+
+The function fails closed: anywhere but localhost, a missing
+`TURNSTILE_SECRET` refuses every request.
+
+Abuse limits, cheapest first:
+
+- Input caps (`planSchema.ts`): program 12k characters, notes 1k, whole
+  request 16k. Quiz answers must be one of the quiz's own options; anything
+  else is dropped. Files over 256 KB are refused unread.
+- A WAF rate-limiting rule on `openlog.fit`: URI path equals `/api/plan`,
+  counted by IP, 1 request per 10 s, block for 10 s — the free plan's one rule.
+  It does not cover `*.pages.dev`, which serves the same function.
+- A monthly budget on the OpenAI project, the hard ceiling on cost.
+
 ## Backups
 
 The `⋯` menu exports the whole database as JSON and imports it back. An import
@@ -113,7 +171,9 @@ move it between devices or survive a cleared browser.
 - A matching stamp is never re-seeded, so deleting every group will not bring
   the starting plan back.
 - The yellow accent (`--accent` in `src/index.css`) marks state only: the open
-  tracker header and today's logged entries. Text on it is always black
+  tracker header, today's logged entries and picked quiz answers. Red
+  (`--danger`) is for error messages only, which always say what went wrong in
+  words too. Text on it is always black
   (`--accent-ink`) so it reads in both themes.
 - Theme is kept in `localStorage` (not IndexedDB) so the inline script in
   `index.html` can apply it synchronously and avoid a flash on load.

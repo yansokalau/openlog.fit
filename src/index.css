@@ -36,7 +36,8 @@
     opacity: 1;
   }
   to {
-    transform: rotate(var(--angle)) translateY(calc(var(--travel) * -1)) scaleY(0.45);
+    transform: rotate(var(--angle)) translateY(calc(var(--travel) * -1))
+      scaleY(0.45);
     opacity: 0;
   }
 }
@@ -76,11 +77,15 @@
   --accent-ink: #000000;
   /* Washed-out accent, so selected text stays readable against it. */
   --selection: #fbf5a3;
+  /* Errors only — something was refused or failed. Tuned per theme so it
+     clears 4.5:1 against the paper either way. */
+  --danger: #d1001f;
 }
 
 .dark {
   --paper: #000000;
   --ink: #ffffff;
+  --danger: #ff6b5e;
 }
 
 @theme inline {
@@ -88,6 +93,7 @@
   --color-ink: var(--ink);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial,
     sans-serif;
 }

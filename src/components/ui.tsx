@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react'
-import { ChevronDownIcon } from './icons'
+import { ChevronDownIcon, WarnIcon } from './icons'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'outline' | 'solid' | 'ghost' | 'dashed' | 'link'
@@ -85,7 +85,18 @@ export function Select({
 }
 
 export function Label({ children }: { children: ReactNode }) {
-  return <span className="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-ink/60">{children}</span>
+  return <span className="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-ink">{children}</span>
+}
+
+/** A refusal or failure, said in words; the colour only reinforces it. */
+export function ErrorNote({ children }: { children: ReactNode }) {
+  return (
+    <p role="alert" className="flex items-start gap-1 text-sm text-danger">
+      {/* Nudged down so the triangle centres on the first line, not the block. */}
+      <WarnIcon size={16} className="mt-0.5 shrink-0" />
+      <span>{children}</span>
+    </p>
+  )
 }
 
 export function Tag({ children }: { children: ReactNode }) {

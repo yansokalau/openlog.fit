@@ -1,0 +1,9 @@
+# Copy to .dev.vars for `npm run dev:api`. In production, set these with
+#   npx wrangler pages secret put OPENAI_API_KEY --project-name gym-tracker
+OPENAI_API_KEY=sk-...
+# Turnstile is off in local dev; this is honoured for localhost requests only.
+# Production needs the real widget secret instead:
+#   npx wrangler pages secret put TURNSTILE_SECRET --project-name gym-tracker
+SKIP_TURNSTILE=1
+# Optional, defaults to gpt-5-mini
+# OPENAI_MODEL=gpt-5-mini

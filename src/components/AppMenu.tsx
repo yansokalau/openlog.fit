@@ -6,7 +6,7 @@ import type { UnitSystem } from '../lib/units'
 import { DotsIcon } from './icons'
 import { ThemeToggle } from './ThemeToggle'
 import { UnitToggle } from './UnitToggle'
-import { Button, Label } from './ui'
+import { Button, ErrorNote, Label } from './ui'
 
 type Data = { groups: Group[]; trackers: Tracker[]; entries: Entry[] }
 
@@ -155,7 +155,7 @@ export function AppMenu({
               </div>
             )}
 
-            {error && <p className="text-sm text-ink/60">{error}</p>}
+            {error && <ErrorNote>{error}</ErrorNote>}
 
             {clearing ? (
               <div className="space-y-2 border-2 border-ink p-2">

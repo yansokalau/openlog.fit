@@ -44,14 +44,16 @@ export function ChevronDownIcon(props: IconProps) {
 }
 
 /** Reorder arrows — the same glyph, flipped, so up and down read as a pair. */
-export function ArrowIcon({ direction, ...props }: IconProps & { direction: 'up' | 'down' }) {
+const ARROW_ROTATION = { up: '', down: 'rotate-180', left: '-rotate-90' }
+
+export function ArrowIcon({ direction, ...props }: IconProps & { direction: 'up' | 'down' | 'left' }) {
   return (
     <Icon
       {...props}
       size={props.size ?? 22}
       strokeWidth={2.5}
       square
-      className={direction === 'down' ? 'rotate-180' : props.className}
+      className={direction === 'up' ? props.className : ARROW_ROTATION[direction]}
     >
       <path d="M12 20V5M5 12l7-7 7 7" />
     </Icon>
@@ -124,5 +126,15 @@ export function LogoMark({ size = 28, className }: IconProps) {
       <circle cx="32" cy="29" r="4" />
       <path d="M14.6255 12H48.255L56 16.1081L48.255 20H14.6255M48.255 12C46.6685 15.1245 46.6398 16.8755 48.255 20M14.6255 12H8.91866C7.66171 15.1243 7.72627 16.8759 8.91866 20H14.6255M14.6255 12V20" />
     </svg>
+  )
+}
+
+/** A triangle with an exclamation mark, for error messages. */
+export function WarnIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={2.25}>
+      <path d="M12 3 22 20H2L12 3Z" strokeLinejoin="round" />
+      <path d="M12 10v4M12 16.5v.5" strokeLinecap="round" />
+    </Icon>
   )
 }

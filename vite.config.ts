@@ -46,6 +46,10 @@ export default defineConfig({
       input: { landing: 'index.html', app: 'app/index.html' },
     },
   },
-  // Listen on the LAN too, so a phone on the same Wi-Fi can open the dev server.
-  server: { host: true },
+  server: {
+    // Listen on the LAN too, so a phone on the same Wi-Fi can open the dev server.
+    host: true,
+    // /api is a Pages Function; `npm run dev:api` serves it on 8788.
+    proxy: { '/api': 'http://localhost:8788' },
+  },
 })

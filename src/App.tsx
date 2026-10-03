@@ -3,6 +3,7 @@ import { AppMenu } from "./components/AppMenu";
 import { DatePicker } from "./components/DatePicker";
 import { GroupSection } from "./components/GroupSection";
 import { LogoMark } from "./components/icons";
+import { Onboarding } from "./components/Onboarding";
 import { Button, Input } from "./components/ui";
 import { useGym } from "./lib/store";
 import { useTheme } from "./lib/theme";
@@ -21,9 +22,18 @@ export default function App() {
   const [addingGroup, setAddingGroup] = useState(false);
   const [groupName, setGroupName] = useState("");
 
+  // The plan builder is the empty plan's screen, and the only way into it:
+  // a new plan means clearing the old one first. Skipping it shows the empty
+  // plan instead, until the plan is cleared again.
+  const [skippedBuilder, setSkippedBuilder] = useState(false);
+
   // Never persisted: a reload always lands back on today.
   const [pickedDate, setPickedDate] = useState<string | null>(null);
   const active = useResolvedActiveDate(pickedDate);
+
+  const showBuilder = gym.groups.length === 0 && !skippedBuilder;
+  // The day being logged into means nothing without a plan on screen to log.
+  const showPlan = gym.ready && !showBuilder && gym.groups.length > 0;
 
   return (
     <UnitContext.Provider value={system}>
@@ -40,18 +50,24 @@ export default function App() {
                 <LogoMark />
                 OpenLog
               </h1>
-              <DatePicker
-                date={active.date}
-                isToday={active.isToday}
-                onChange={setPickedDate}
-              />
+              {showPlan && (
+                <DatePicker
+                  date={active.date}
+                  isToday={active.isToday}
+                  onChange={setPickedDate}
+                />
+              )}
               <AppMenu
                 theme={theme}
                 onTheme={setTheme}
                 system={system}
                 onSystem={setSystem}
                 snapshot={gym.snapshot}
-                onReplaceAll={gym.replaceAll}
+                onReplaceAll={async (data) => {
+                  await gym.replaceAll(data);
+                  // Cleared: offer the builder again even if it was skipped.
+                  if (data.groups.length === 0) setSkippedBuilder(false);
+                }}
               />
             </div>
           </header>
@@ -59,6 +75,13 @@ export default function App() {
           <div className="mx-auto w-full max-w-xl px-4 pb-16 pt-6">
             {!gym.ready ? (
               <p className="text-sm text-ink/50">Loading…</p>
+            ) : showBuilder ? (
+              <Onboarding
+                system={system}
+                onUse={(records) => gym.replaceAll({ ...records, entries: [] })}
+                onRestore={gym.replaceAll}
+                onClose={() => setSkippedBuilder(true)}
+              />
             ) : (
               // Scroll anchoring fights the deliberate scrolling below: collapsing
               // a card shifts the page under the one just opened.
@@ -96,7 +119,17 @@ export default function App() {
 
                 {gym.groups.length === 0 && (
                   <p className="text-sm text-ink/50">
-                    Nothing here yet. Add your first group below.
+                    Nothing here yet. Add your first group below, or{" "}
+                    {/* Kept with its full stop, which would otherwise wrap alone. */}
+                    <span className="whitespace-nowrap">
+                      <Button
+                        variant="link"
+                        onClick={() => setSkippedBuilder(false)}
+                      >
+                        build a plan with AI
+                      </Button>
+                      .
+                    </span>
                   </p>
                 )}
 
