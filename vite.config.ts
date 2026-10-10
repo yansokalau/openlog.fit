@@ -38,6 +38,19 @@ export default defineConfig({
         // own documents and must not fall back into it.
         navigateFallback: '/app/index.html',
         navigateFallbackAllowlist: [/^\/app(\/|$)/],
+        // The wordmark font comes from Google Fonts; keep a copy so the logo
+        // still renders in it offline.
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
     }),
   ],

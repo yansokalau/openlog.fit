@@ -36,9 +36,14 @@ export default function App() {
             {/* The bar spans the window and its contents run much wider than
                 the body — a toolbar, not a column heading. */}
             <div className="mx-auto flex w-full max-w-[1440px] items-center gap-2 px-4 py-3">
-              <h1 className="mr-auto flex items-center gap-2 text-lg font-bold uppercase tracking-[0.12em]">
+              <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
                 <LogoMark />
-                OpenLog
+                <span>
+                  OpenLog
+                  <span className="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">
+                    .fit
+                  </span>
+                </span>
               </h1>
               <DatePicker
                 date={active.date}
