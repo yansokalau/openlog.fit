@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useInstall } from '../lib/install'
-import { InstallIcon, ShareIcon } from './icons'
+import { ShareIcon } from './icons'
 import { Button } from './ui'
 
 /**
@@ -38,20 +38,21 @@ export function InstallButton() {
 
   return (
     <div ref={ref} className="relative">
+      {/* Bold to match the date chip beside it. Forced, because the size's own
+          font-medium is a plain utility too — which of the two wins is decided
+          by their order in the stylesheet, not in this attribute. */}
       <Button
         size="sm"
         aria-label="Install OpenLog"
         title="Install OpenLog"
         aria-expanded={install.how === 'hint' ? hinting : undefined}
-        className="h-9 gap-1.5 px-2"
+        className="h-9 px-2 !font-bold"
         onClick={() => {
           if (install.how === 'prompt') void install.install()
           else setHinting((v) => !v)
         }}
       >
-        <InstallIcon size={16} />
-        {/* The label is the first thing to go when the bar gets tight. */}
-        <span className="hidden sm:inline">Install</span>
+        Install
       </Button>
 
       {install.how === 'hint' && hinting && (
