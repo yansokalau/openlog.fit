@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppMenu } from "./components/AppMenu";
 import { DatePicker } from "./components/DatePicker";
 import { GroupSection } from "./components/GroupSection";
+import { InstallButton } from "./components/InstallButton";
 import { LogoMark } from "./components/icons";
 import { Onboarding } from "./components/Onboarding";
 import { Button, Input } from "./components/ui";
@@ -55,6 +56,7 @@ export default function App() {
                   </span>
                 </span>
               </h1>
+              <InstallButton />
               {showPlan && (
                 <DatePicker
                   date={active.date}

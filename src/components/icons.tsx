@@ -176,3 +176,23 @@ export function PlusIcon(props: IconProps) {
     </Icon>
   )
 }
+
+/** A phone taking something in — install, in the home-screen sense. */
+export function InstallIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <rect x="6" y="2.5" width="12" height="19" rx="2" strokeLinejoin="round" />
+      <path d="M12 7v7m0 0 2.5-2.5M12 14l-2.5-2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </Icon>
+  )
+}
+
+/** iOS share glyph, so the hint names the button by its shape as well. */
+export function ShareIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <path d="M12 3v11m0-11 3 3m-3-3L9 6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7 10H5.5v10.5h13V10H17" strokeLinecap="round" strokeLinejoin="round" />
+    </Icon>
+  )
+}
