@@ -140,9 +140,9 @@ Abuse limits, cheapest first:
 (`privacy/index.html`, `terms/index.html`, styled through `src/legal.ts`). The
 privacy policy must keep its reference to Cloudflare's Turnstile Privacy
 Addendum: it is the condition for running Turnstile in invisible mode. Both
-pages carry `[OPERATOR NAME]` and `[CONTACT EMAIL]` placeholders, highlighted
-in yellow, to fill in before deploying. Anything that changes what leaves the
-device — a new service, a new field sent to the AI — belongs in the policy too.
+name the operator and contact address (openlog.fit@gmail.com). Anything that
+changes what leaves the device — a new service, a new field sent to the AI —
+belongs in the policy too.
 
 ## Backups
 
