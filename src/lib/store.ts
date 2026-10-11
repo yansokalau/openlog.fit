@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as db from "./db";
+import { keepData } from "./persist";
 import type { Entry, Group, Tracker, Variant } from "./types";
 import { ARCHIVE_GROUP, dateKey, isArchiveGroup, uid } from "./utils";
 
@@ -96,6 +97,14 @@ export function useGym() {
     [groups]
   );
 
+  /*
+   * `keepData()` below rides along with the two ways a program comes into
+   * existence — built or restored in one go, or grown a tracker at a time.
+   * Once there is something worth keeping, the browser is asked not to evict
+   * it; before that there is nothing to argue for. Both calls sit inside the
+   * click that created the data, which is what Firefox needs to show its
+   * prompt, and nothing waits on the answer.
+   */
   const addTracker = useCallback(
     async (groupId: string, values: Pick<Tracker, "preset" | "variants">) => {
       const tracker: Tracker = {
@@ -109,6 +118,8 @@ export function useGym() {
       };
       setTrackers((prev) => [...prev, tracker]);
       await db.put(db.STORES.trackers, tracker);
+
+      void keepData();
     },
     [trackers]
   );
@@ -314,6 +325,8 @@ export function useGym() {
       setTrackers(data.trackers);
       setEntries(data.entries);
       await db.replaceAll(data);
+      // Not on the way out: this is also how everything is cleared.
+      if (data.trackers.length > 0) void keepData();
     },
     []
   );
