@@ -94,6 +94,8 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-danger: var(--danger);
+  /* Wordmark only; the landing page loads just the glyphs of "OpenLog.fit". */
+  --font-logo: "Agdasima", sans-serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial,
     sans-serif;
 }
