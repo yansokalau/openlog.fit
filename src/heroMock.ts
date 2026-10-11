@@ -117,9 +117,6 @@ export function heroMock() {
       await beat(BEAT.betweenSets)
       await logSet(REPS_AFTER)
 
-      await beat(BEAT.betweenSets)
-      await logSet(REPS_AFTER)
-
       await beat(BEAT.beforeClose)
       open(false)
 
