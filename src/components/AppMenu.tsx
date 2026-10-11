@@ -10,6 +10,9 @@ import { Button, ErrorNote, Label } from './ui'
 
 type Data = { groups: Group[]; trackers: Tracker[]; entries: Entry[] }
 
+const SHARE_TEXT =
+  'A minimal log for lifts, runs, climbs and body measurements. Free, offline, no account.'
+
 function plural(count: number, one: string, many = `${one}s`): string {
   return `${count} ${count === 1 ? one : many}`
 }
@@ -37,6 +40,8 @@ export function AppMenu({
   const [pending, setPending] = useState<Backup | null>(null)
   const [clearing, setClearing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  /** Confirmation, or the bare link where the clipboard is unavailable. */
+  const [shared, setShared] = useState<string | null>(null)
 
   const ref = useRef<HTMLDivElement>(null)
   const file = useRef<HTMLInputElement>(null)
@@ -63,6 +68,7 @@ export function AppMenu({
     setPending(null)
     setClearing(false)
     setError(null)
+    setShared(null)
   }
 
   const chooseFile = async (chosen: File) => {
@@ -77,6 +83,35 @@ export function AppMenu({
   }
 
   const counts = snapshot()
+
+  /**
+   * Shares the landing page rather than /app/, which is where a stranger
+   * following the link wants to arrive. The sheet is the whole feature where
+   * there is one; elsewhere the link goes to the clipboard, which is what the
+   * sheet would mostly be used for anyway.
+   */
+  const share = async () => {
+    const url = window.location.origin
+    setShared(null)
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'OpenLog', text: SHARE_TEXT, url })
+        return
+      } catch (e) {
+        // Dismissing the sheet throws too; that is a decision not to share,
+        // not a failure to fall back from.
+        if ((e as DOMException)?.name === 'AbortError') return
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(url)
+      setShared('Link copied')
+    } catch {
+      setShared(url)
+    }
+  }
 
   return (
     <div ref={ref} className="relative">
@@ -98,6 +133,13 @@ export function AppMenu({
               <UnitToggle system={system} onChange={onSystem} />
               <ThemeToggle theme={theme} onChange={onTheme} />
             </div>
+          </div>
+
+          <div className="space-y-2 border-t-2 border-ink pt-3">
+            <Button size="md" className="w-full" onClick={() => void share()}>
+              Share OpenLog
+            </Button>
+            {shared && <p className="text-sm text-ink/60">{shared}</p>}
           </div>
 
           <div className="space-y-2 border-t-2 border-ink pt-3">
