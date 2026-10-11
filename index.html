@@ -137,12 +137,8 @@
 
           <!-- A static likeness of the app, so the page shows the product
                rather than describing it. -->
-          <figure aria-label="OpenLog on a phone: a Monday group with bench press open" class="mx-auto w-full max-w-sm">
+          <figure aria-label="OpenLog: bench press open, with the weight and reps steppers and two sets already logged today" class="mx-auto w-full max-w-sm">
             <div class="mr-2 border-2 border-ink bg-paper p-4 shadow-[8px_8px_0_0_var(--ink)] sm:mr-0">
-              <div class="-mx-4 -mt-4 mb-4 flex items-center gap-2 border-b-2 border-ink px-4 py-3">
-                <span class="mr-auto flex items-center gap-2 font-logo text-2xl leading-none"><svg viewBox="6 9 52 46" width="27" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25.2532 32.3C22.0848 27.64 20.8845 24.9531 20 20M25.2532 32.3C27.2757 36.0884 27.9848 38.2681 28.1373 42.3M25.2532 32.3C26.4335 31.9086 27.4979 31.5998 28.5 31.3778M38.7468 32.3C41.9441 27.8957 43.4259 25.3182 44 20M38.7468 32.3C36.6788 35.7903 36.0726 38.0022 35.7597 42.3M38.7468 32.3C37.6003 31.903 36.5639 31.5967 35.5913 31.3778M28.1373 42.3C31.3179 43.4338 33.0236 43.6382 35.7597 42.3M28.1373 42.3C25.861 45.5768 25.0516 47.7515 24.1202 52M35.7597 42.3C38.3183 45.3886 39.2452 47.5282 40.0858 52"/><circle cx="32" cy="29" r="4"/><path d="M14.6255 12H48.255L56 16.1081L48.255 20H14.6255M48.255 12C46.6685 15.1245 46.6398 16.8755 48.255 20M14.6255 12H8.91866C7.66171 15.1243 7.72627 16.8759 8.91866 20H14.6255M14.6255 12V20"/></svg><span>OpenLog<span class="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">.fit</span></span></span>
-                <span class="border-2 border-ink px-2 py-1 text-[11px] font-medium uppercase tracking-wider">Today</span>
-              </div>
               <p class="mb-2 text-sm font-bold uppercase tracking-[0.12em]">Monday Gym</p>
               <ul class="space-y-2 text-left">
                 <li class="border-2 border-ink">
@@ -153,11 +149,38 @@
                     </span>
                     <span class="rotate-45 text-lg leading-none" aria-hidden="true">+</span>
                   </div>
-                  <div class="space-y-2 border-t-2 border-ink p-3 text-sm tabular-nums">
-                    <div class="flex justify-between"><span>Set 1</span><span>82.5 kg × 8</span></div>
-                    <div class="flex justify-between"><span>Set 2</span><span>82.5 kg × 7</span></div>
-                    <div class="flex h-10 items-center justify-center border-2 border-ink bg-ink text-xs font-medium uppercase tracking-wider text-paper">
+                  <div class="space-y-3 border-t-2 border-ink p-3">
+                    <div>
+                      <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Weight (kg)</span>
+                      <div class="grid grid-cols-[3.5rem_1fr_3.5rem] border-2 border-ink">
+                        <span class="flex h-16 items-center justify-center border-r-2 border-ink text-2xl leading-none" aria-hidden="true">&minus;</span>
+                        <span class="flex h-16 items-center justify-center text-3xl font-semibold tabular-nums">82.5</span>
+                        <span class="flex h-16 items-center justify-center border-l-2 border-ink text-2xl leading-none" aria-hidden="true">+</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Reps</span>
+                      <div class="grid grid-cols-[3.5rem_1fr_3.5rem] border-2 border-ink">
+                        <span class="flex h-16 items-center justify-center border-r-2 border-ink text-2xl leading-none" aria-hidden="true">&minus;</span>
+                        <span class="flex h-16 items-center justify-center text-3xl font-semibold tabular-nums">8</span>
+                        <span class="flex h-16 items-center justify-center border-l-2 border-ink text-2xl leading-none" aria-hidden="true">+</span>
+                      </div>
+                    </div>
+                    <div class="flex h-14 items-center justify-center border-2 border-ink bg-ink text-base font-medium uppercase tracking-wide text-paper">
                       Log set
+                    </div>
+                    <div>
+                      <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Today &middot; 2 sets</span>
+                      <ul class="flex flex-wrap gap-2">
+                        <li class="flex items-stretch border-2 border-current bg-accent text-accent-ink">
+                          <span class="px-2 py-1 text-sm tabular-nums">82.5 kg × 8</span>
+                          <span class="flex items-center border-l-2 border-current px-2 text-sm leading-none" aria-hidden="true">&#10005;</span>
+                        </li>
+                        <li class="flex items-stretch border-2 border-current bg-accent text-accent-ink">
+                          <span class="px-2 py-1 text-sm tabular-nums">82.5 kg × 7</span>
+                          <span class="flex items-center border-l-2 border-current px-2 text-sm leading-none" aria-hidden="true">&#10005;</span>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </li>
