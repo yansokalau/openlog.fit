@@ -56,7 +56,12 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      input: { landing: 'index.html', app: 'app/index.html' },
+      input: {
+        landing: 'index.html',
+        app: 'app/index.html',
+        privacy: 'privacy/index.html',
+        terms: 'terms/index.html',
+      },
     },
   },
   server: {

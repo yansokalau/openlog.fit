@@ -138,3 +138,41 @@ export function WarnIcon(props: IconProps) {
     </Icon>
   )
 }
+
+/** Two sparkles: something written for you. */
+export function SparkleIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <path d="M10 3.5 11.8 8.7 17 10.5 11.8 12.3 10 17.5 8.2 12.3 3 10.5 8.2 8.7Z" strokeLinejoin="round" />
+      <path d="M18 14.5 18.8 16.7 21 17.5 18.8 18.3 18 20.5 17.2 18.3 15 17.5 17.2 16.7Z" strokeLinejoin="round" />
+    </Icon>
+  )
+}
+
+/** A page of lines: a program you already have. */
+export function DocumentIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <path d="M6 3h8l4 4v14H6Z" strokeLinejoin="round" />
+      <path d="M14 3v4h4M9 12h6M9 16h6" />
+    </Icon>
+  )
+}
+
+/** An arrow turning back on a clock: bring back what you had. */
+export function RestoreIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3L4 9.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 5v4.5h4.5M12 8v4l2.5 2" strokeLinecap="round" strokeLinejoin="round" />
+    </Icon>
+  )
+}
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={1.75}>
+      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+    </Icon>
+  )
+}

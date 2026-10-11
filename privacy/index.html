@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Privacy Policy — OpenLog</title>
+    <meta name="description" content="How OpenLog handles your data: your log stays on your device; the optional AI plan builder sends what you type to OpenAI and uses Cloudflare Turnstile." />
+    <link rel="canonical" href="https://openlog.fit/privacy/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Agdasima&amp;text=OpenLog&amp;display=swap" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <script>
+      // Same theme source as the app, applied before first paint.
+      try {
+        var t = localStorage.getItem('ol-theme')
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+    <script type="module" src="/src/legal.ts"></script>
+  </head>
+  <body>
+    <div class="mx-auto w-full max-w-5xl px-4">
+      <header class="flex items-center gap-4 border-b-2 border-ink py-3">
+        <a href="/" class="mr-auto flex items-center gap-2 font-logo text-3xl leading-none"><svg viewBox="6 9 52 46" width="32" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25.2532 32.3C22.0848 27.64 20.8845 24.9531 20 20M25.2532 32.3C27.2757 36.0884 27.9848 38.2681 28.1373 42.3M25.2532 32.3C26.4335 31.9086 27.4979 31.5998 28.5 31.3778M38.7468 32.3C41.9441 27.8957 43.4259 25.3182 44 20M38.7468 32.3C36.6788 35.7903 36.0726 38.0022 35.7597 42.3M38.7468 32.3C37.6003 31.903 36.5639 31.5967 35.5913 31.3778M28.1373 42.3C31.3179 43.4338 33.0236 43.6382 35.7597 42.3M28.1373 42.3C25.861 45.5768 25.0516 47.7515 24.1202 52M35.7597 42.3C38.3183 45.3886 39.2452 47.5282 40.0858 52"/><circle cx="32" cy="29" r="4"/><path d="M14.6255 12H48.255L56 16.1081L48.255 20H14.6255M48.255 12C46.6685 15.1245 46.6398 16.8755 48.255 20M14.6255 12H8.91866C7.66171 15.1243 7.72627 16.8759 8.91866 20H14.6255M14.6255 12V20"/></svg><span>OpenLog<span class="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">.fit</span></span></a>
+        <a
+          href="/app/"
+          class="inline-flex h-11 items-center border-2 border-ink px-4 text-sm font-medium transition-colors hover:bg-ink hover:text-paper"
+          >Open app</a
+        >
+      </header>
+
+      <!-- Prose styles live on the wrapper so the text below stays plain HTML. -->
+      <main
+        class="max-w-2xl py-12 text-ink/80 [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-ink [&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-ink [&_li]:mt-1 [&_p]:mt-3 [&_strong]:text-ink [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5"
+      >
+        <h1 class="text-4xl font-bold tracking-tight text-ink">Privacy Policy</h1>
+        <p class="text-sm text-ink/60">Last updated 11 October 2026</p>
+
+        <p>
+          OpenLog has no accounts, no analytics and no ads. Your training log is stored only in your
+          browser, on your device. The one time anything you write leaves your device is when you
+          choose to use the AI plan builder.
+        </p>
+
+        <h2>Who we are</h2>
+        <p>
+          OpenLog (openlog.fit) is run by <mark class="bg-accent px-1 text-accent-ink">[OPERATOR NAME]</mark>. For any question about this policy or your
+          data, write to <mark class="bg-accent px-1 text-accent-ink">[CONTACT EMAIL]</mark>.
+        </p>
+
+        <h2>What stays on your device</h2>
+        <ul>
+          <li>
+            <strong>Your log</strong> — groups, trackers, targets and every entry you record — is kept
+            in your browser's storage (IndexedDB). It is never sent to us, and we cannot see it.
+          </li>
+          <li>
+            <strong>Display settings</strong> — light or dark theme, metric or imperial units — are kept
+            in your browser's local storage.
+          </li>
+          <li>
+            <strong>Backups</strong> you export are files on your device. You decide where they go.
+          </li>
+        </ul>
+        <p>
+          You can delete all of it at any time with <strong>Clear everything</strong> in the app menu,
+          or by clearing this site's data in your browser. Because we never hold a copy, we cannot
+          recover it for you either — export a backup if you want one.
+        </p>
+
+        <h2>The AI plan builder</h2>
+        <p>
+          When you ask the app to build a plan, it sends what you entered for that request — pasted
+          program text, the contents of any files you attach, your notes, your quiz answers and your
+          unit preference — to our server function, which passes it to
+          <a href="https://openai.com/policies/privacy-policy/">OpenAI</a> to write the plan and
+          returns the plan to your browser.
+        </p>
+        <ul>
+          <li>We do not store what you send or the plan that comes back, and we do not log it.</li>
+          <li>
+            OpenAI processes it as our service provider under its API terms. Its handling of API
+            data — including how long it is kept for abuse monitoring — is described in
+            <a href="https://openai.com/policies/privacy-policy/">OpenAI's privacy policy</a> and
+            <a href="https://openai.com/enterprise-privacy/">business data commitments</a>.
+          </li>
+          <li>
+            If you mention health details such as an injury, they are used only to write your plan.
+            Leave out anything you would rather not share; the builder works without it.
+          </li>
+          <li>Nothing is sent until you press <strong>Build my plan</strong>.</li>
+        </ul>
+
+        <h2>Bot protection (Cloudflare Turnstile)</h2>
+        <p>
+          To stop automated abuse, the AI plan builder uses Cloudflare Turnstile to check that a
+          request comes from a person. It runs in your browser when you open the builder and
+          processes signals such as your IP address and browser and device characteristics. Your use
+          of Turnstile is subject to the
+          <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy</a> and the
+          <a href="https://www.cloudflare.com/turnstile-privacy-policy/">Turnstile Privacy Addendum</a>.
+        </p>
+
+        <h2>Hosting</h2>
+        <p>
+          The site runs on Cloudflare. Like any web host, Cloudflare processes your IP address and
+          basic request details to deliver pages, limit request rates and protect the site from
+          attacks, as described in the
+          <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy</a>.
+        </p>
+
+        <h2>Fonts</h2>
+        <p>
+          The OpenLog wordmark uses a font served by Google Fonts, so your browser fetches it from
+          Google, which receives your IP address and basic request details, as described in
+          <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>. Only the letters
+          of the wordmark are requested, and the app caches them to work offline.
+        </p>
+
+        <h2>Cookies</h2>
+        <p>
+          OpenLog sets no cookies and uses no tracking or advertising technology. Cloudflare may use
+          strictly necessary cookies or similar technologies for security, as described in its
+          policies.
+        </p>
+
+        <h2>Legal bases</h2>
+        <p>Where data protection law such as the GDPR applies, we rely on:</p>
+        <ul>
+          <li>your request, to send what you entered to OpenAI and build the plan you asked for;</li>
+          <li>our legitimate interest in keeping the service secure, for bot checks and hosting logs;</li>
+          <li>our legitimate interest in showing the site as designed, for loading the wordmark font.</li>
+        </ul>
+
+        <h2>Your rights</h2>
+        <p>
+          Depending on where you live, you may have the right to access, correct or delete personal
+          data, to object to its processing, and to complain to your data protection authority.
+          Since we keep no account or copy of your data, there is usually nothing for us to hand over
+          or delete — but write to <mark class="bg-accent px-1 text-accent-ink">[CONTACT EMAIL]</mark> with any request and we will help.
+        </p>
+
+        <h2>Children</h2>
+        <p>OpenLog is not intended for children under 16.</p>
+
+        <h2>Changes</h2>
+        <p>
+          If this policy changes, we will update this page and the date at the top. Significant
+          changes will be noted in the app.
+        </p>
+
+      </main>
+
+      <footer class="flex flex-wrap items-center gap-4 border-t-2 border-ink py-6 text-sm text-ink/60">
+        <span class="mr-auto flex items-center gap-2 font-logo text-xl leading-none text-ink"><svg viewBox="6 9 52 46" width="23" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25.2532 32.3C22.0848 27.64 20.8845 24.9531 20 20M25.2532 32.3C27.2757 36.0884 27.9848 38.2681 28.1373 42.3M25.2532 32.3C26.4335 31.9086 27.4979 31.5998 28.5 31.3778M38.7468 32.3C41.9441 27.8957 43.4259 25.3182 44 20M38.7468 32.3C36.6788 35.7903 36.0726 38.0022 35.7597 42.3M38.7468 32.3C37.6003 31.903 36.5639 31.5967 35.5913 31.3778M28.1373 42.3C31.3179 43.4338 33.0236 43.6382 35.7597 42.3M28.1373 42.3C25.861 45.5768 25.0516 47.7515 24.1202 52M35.7597 42.3C38.3183 45.3886 39.2452 47.5282 40.0858 52"/><circle cx="32" cy="29" r="4"/><path d="M14.6255 12H48.255L56 16.1081L48.255 20H14.6255M48.255 12C46.6685 15.1245 46.6398 16.8755 48.255 20M14.6255 12H8.91866C7.66171 15.1243 7.72627 16.8759 8.91866 20H14.6255M14.6255 12V20"/></svg><span>OpenLog<span class="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">.fit</span></span></span>
+        <a href="/privacy/" class="underline-offset-4 hover:text-ink hover:underline">Privacy</a>
+        <a href="/terms/" class="underline-offset-4 hover:text-ink hover:underline">Terms</a>
+      </footer>
+    </div>
+  </body>
+</html>

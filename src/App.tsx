@@ -83,6 +83,7 @@ export default function App() {
             ) : showBuilder ? (
               <Onboarding
                 system={system}
+                onSystem={setSystem}
                 onUse={(records) => gym.replaceAll({ ...records, entries: [] })}
                 onRestore={gym.replaceAll}
                 onClose={() => setSkippedBuilder(true)}

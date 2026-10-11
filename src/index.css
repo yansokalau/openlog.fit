@@ -58,7 +58,46 @@
   animation-fill-mode: forwards;
 }
 
+/*
+ * A card landing in the plan loader's bottom slot: up from below, tilted,
+ * settling square. Runs once per card, on mount.
+ */
+@keyframes plan-card-in {
+  from {
+    transform: translateY(140%) rotate(-7deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    transform: none;
+  }
+}
+
+.plan-card-in {
+  animation: plan-card-in 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* The loader's status line: each new message rises in. */
+@keyframes loader-message-in {
+  from {
+    transform: translateY(0.5em);
+    opacity: 0;
+  }
+}
+
+.loader-message {
+  display: inline-block;
+  animation: loader-message-in 400ms ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .plan-card-in,
+  .loader-message {
+    animation: none;
+  }
+
   [data-panel] {
     animation-duration: 1ms !important;
   }

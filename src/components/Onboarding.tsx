@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   PROGRAM_FILES,
   joinProgram,
@@ -14,8 +14,10 @@ import { PRESETS } from '../lib/presets'
 import type { Entry, Group, Tracker } from '../lib/types'
 import { useTurnstile } from '../lib/turnstile'
 import type { UnitSystem } from '../lib/units'
-import { ArrowIcon } from './icons'
+import { ArrowIcon, DocumentIcon, PlusIcon, RestoreIcon, SparkleIcon } from './icons'
 import { Button, ErrorNote, Label, Tag } from './ui'
+import { PlanLoader } from './PlanLoader'
+import { UnitToggle } from './UnitToggle'
 
 type Records = { groups: Group[]; trackers: Tracker[] }
 type Step = 'choose' | 'import' | 'quiz' | 'preview'
@@ -28,11 +30,14 @@ type Step = 'choose' | 'import' | 'quiz' | 'preview'
  */
 export function Onboarding({
   system,
+  onSystem,
   onUse,
   onRestore,
   onClose,
 }: {
   system: UnitSystem
+  /** Chosen up front, since the plan's targets are written in these units. */
+  onSystem: (system: UnitSystem) => void
   /** Writes the generated plan as the whole plan. */
   onUse: (records: Records) => Promise<void>
   /** Swaps in a backup whole — plan and logged history. */
@@ -53,6 +58,12 @@ export function Onboarding({
   const backupInput = useRef<HTMLInputElement>(null)
   const challenge = useRef<HTMLDivElement>(null)
   const human = useTurnstile(challenge)
+
+  // A plan is read from its first group, not from wherever the Build button
+  // left the page.
+  useEffect(() => {
+    if (step === 'preview') window.scrollTo({ top: 0 })
+  }, [step])
 
   const program = source === 'import' ? joinProgram(pasted, files) : ''
   const answered = Object.values(preferences).some(Boolean)
@@ -130,6 +141,19 @@ export function Onboarding({
     </label>
   )
 
+  /** The quiz leads with free text: no label, larger type, tinted while typing. */
+  const freeText = (
+    <textarea
+      value={notes}
+      onChange={(e) => setNotes(e.target.value)}
+      rows={4}
+      maxLength={MAX_NOTES_CHARS}
+      aria-label="Describe your training"
+      placeholder="3 days a week with dumbbells at home. Want to get stronger. Bad left shoulder."
+      className="block w-full resize-none border-2 border-ink bg-paper p-4 text-lg leading-snug transition-colors placeholder:text-ink/35 focus:bg-accent/15 focus:outline-none"
+    />
+  )
+
   const footer = (
     <div className="space-y-3">
       {error && <ErrorNote>{error}</ErrorNote>}
@@ -146,7 +170,10 @@ export function Onboarding({
         {loading ? 'Building your plan…' : human.ready ? 'Build my plan' : 'Checking you are human…'}
       </Button>
       <p className="text-xs text-ink/50">
-        What you enter here is sent to OpenAI to write the plan, and is not stored. Your log never leaves this device.
+        What you enter here is sent to OpenAI to write the plan, and is not stored. Your log never leaves this device.{' '}
+        <a href="/privacy/" className="underline underline-offset-4 hover:text-ink">
+          Privacy
+        </a>
       </p>
     </div>
   )
@@ -158,36 +185,35 @@ export function Onboarding({
         // bottom padding, and the gap before the Turnstile slot below — so the
         // choice sits mid-screen without making the page scroll.
         <div className="mx-auto flex min-h-[calc(100dvh-11rem)] w-full max-w-[360px] flex-col justify-center gap-6 text-center">
-          <div className="space-y-2">
-            <StepTitle centered>
-              Build your plan
-            </StepTitle>
-            <p className="text-sm text-ink/60">
-              Bring the program you already follow, or answer a few questions and get one written for you.
-            </p>
+          <h2 className="text-3xl font-bold uppercase tracking-[0.08em]">Let's begin</h2>
+          <input
+            ref={backupInput}
+            type="file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={(e) => {
+              const chosen = e.target.files?.[0]
+              e.target.value = ''
+              if (chosen) void restoreBackup(chosen)
+            }}
+          />
+          <div className="grid grid-cols-2 gap-3">
+            <ChoiceTile icon={<SparkleIcon size={36} />} onClick={() => open('quiz')} solid>
+              Build me a plan
+            </ChoiceTile>
+            <ChoiceTile icon={<DocumentIcon size={36} />} onClick={() => open('import')}>
+              I have a program
+            </ChoiceTile>
+            <ChoiceTile icon={<RestoreIcon size={36} />} onClick={() => backupInput.current?.click()}>
+              Restore backup
+            </ChoiceTile>
+            <ChoiceTile icon={<PlusIcon size={36} />} onClick={onClose}>
+              Start empty
+            </ChoiceTile>
           </div>
-          <div className="grid gap-3">
-            <ChoiceCard title="I have a program" hint="Paste it, or drop a .txt, .csv or .json file" onClick={() => open('import')} />
-            <ChoiceCard title="Build one for me" hint="Describe what you want, or tap a few options" onClick={() => open('quiz')} />
-          </div>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <input
-                ref={backupInput}
-                type="file"
-                accept="application/json,.json"
-                className="hidden"
-                onChange={(e) => {
-                  const chosen = e.target.files?.[0]
-                  e.target.value = ''
-                  if (chosen) void restoreBackup(chosen)
-                }}
-              />
-              <Button variant="link" onClick={() => backupInput.current?.click()}>
-                I have an OpenLog backup
-              </Button>
-              <Button variant="link" onClick={onClose}>
-                Start with an empty plan
-              </Button>
+          {/* Pinned to the bottom of the screen, clear of the iPhone home bar. */}
+          <div className="fixed inset-x-0 bottom-0 flex justify-center pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+            <UnitToggle system={system} onChange={onSystem} />
           </div>
           {error && (
             <div className="flex justify-center">
@@ -273,16 +299,9 @@ export function Onboarding({
       {step === 'quiz' && (
         <>
           <StepTitle onBack={() => setStep('choose')} disabled={loading}>
-            About you
+            Fill in whatever you like
           </StepTitle>
-          {notesField(
-            'In your own words',
-            'e.g. 3 days a week at home with dumbbells. Want to get stronger and lose a bit of fat. Bad left shoulder.',
-            4,
-          )}
-          <p className="border-t-2 border-ink pt-4 text-sm text-ink/60">
-            And/or pick what fits — skip anything you have covered above.
-          </p>
+          {freeText}
           {QUESTIONS.map((question) => (
             <fieldset key={question.key}>
               <legend className="contents">
@@ -301,7 +320,7 @@ export function Onboarding({
                       }
                       // Not a Button variant: a picked chip keeps its fill on
                       // hover, so the state never reads as its opposite.
-                      className={`h-8 border-2 px-2 text-[11px] font-medium uppercase tracking-wider transition-colors ${
+                      className={`h-9 border-2 px-3 text-xs font-semibold uppercase tracking-wider transition-colors ${
                         picked
                           ? 'border-accent-ink bg-accent text-accent-ink'
                           : 'border-ink text-ink hover:bg-ink/10'
@@ -367,6 +386,10 @@ export function Onboarding({
         </>
       )}
 
+      {/* Over everything until the plan or an error comes back: the request is
+          already paid for, so there is nothing to cancel. */}
+      {loading && <PlanLoader />}
+
       {/* Kept outside the steps so the widget, and the token it has earned,
           survives moving between them. Empty unless a click is needed. */}
       <div ref={challenge} />
@@ -378,23 +401,20 @@ function StepTitle({
   children,
   onBack,
   disabled,
-  centered,
 }: {
   children: ReactNode
   onBack?: () => void
   disabled?: boolean
-  /** Title centred on the page, with the back arrow pinned to the left edge so it does not pull the title off centre. */
-  centered?: boolean
 }) {
   return (
-    <div className={`flex items-center gap-3 ${centered ? 'relative min-h-9 justify-center' : ''}`}>
+    <div className="flex items-center gap-3">
       {onBack && (
         <button
           type="button"
           aria-label="Back"
           onClick={onBack}
           disabled={disabled}
-          className={`flex h-9 w-10 shrink-0 items-center justify-center border-2 border-ink text-ink hover:bg-ink hover:text-paper disabled:opacity-30 ${centered ? 'absolute left-0' : ''}`}
+          className="flex h-9 w-10 shrink-0 items-center justify-center border-2 border-ink text-ink hover:bg-ink hover:text-paper disabled:opacity-30"
         >
           <ArrowIcon direction="left" size={18} />
         </button>
@@ -404,15 +424,32 @@ function StepTitle({
   )
 }
 
-function ChoiceCard({ title, hint, onClick }: { title: string; hint: string; onClick: () => void }) {
+/** A square start tile; inverts on hover like the app's buttons. */
+function ChoiceTile({
+  icon,
+  children,
+  onClick,
+  solid,
+}: {
+  icon: ReactNode
+  children: ReactNode
+  onClick: () => void
+  /** Filled, like the solid Button — the path most people take. */
+  solid?: boolean
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="border-2 border-ink p-4 transition-colors hover:bg-ink hover:text-paper"
+      className={`flex aspect-square flex-col items-center justify-center gap-3 border-2 border-ink p-3 transition-colors ${
+        solid ? 'bg-ink text-paper hover:bg-paper hover:text-ink' : 'bg-paper text-ink hover:bg-ink hover:text-paper'
+      }`}
     >
-      <span className="block text-base font-bold uppercase tracking-wide">{title}</span>
-      <span className="block text-sm opacity-60">{hint}</span>
+      {icon}
+      {/* Two lines tall on every tile, so a label that wraps does not lift its icon above the others. */}
+      <span className="flex min-h-[2lh] items-center text-sm font-bold uppercase leading-tight tracking-wide">
+        {children}
+      </span>
     </button>
   )
 }

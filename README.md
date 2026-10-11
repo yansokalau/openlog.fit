@@ -134,6 +134,16 @@ Abuse limits, cheapest first:
   It does not cover `*.pages.dev`, which serves the same function.
 - A monthly budget on the OpenAI project, the hard ceiling on cost.
 
+## Privacy and terms
+
+`/privacy/` and `/terms/` are static pages like the landing page
+(`privacy/index.html`, `terms/index.html`, styled through `src/legal.ts`). The
+privacy policy must keep its reference to Cloudflare's Turnstile Privacy
+Addendum: it is the condition for running Turnstile in invisible mode. Both
+pages carry `[OPERATOR NAME]` and `[CONTACT EMAIL]` placeholders, highlighted
+in yellow, to fill in before deploying. Anything that changes what leaves the
+device — a new service, a new field sent to the AI — belongs in the policy too.
+
 ## Backups
 
 The `⋯` menu exports the whole database as JSON and imports it back. An import
