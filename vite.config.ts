@@ -13,8 +13,8 @@ export default defineConfig({
       // an installed copy always opens straight into the app.
       manifest: {
         id: '/app/',
-        name: 'OpenLog — workout & training log',
-        short_name: 'OpenLog',
+        name: 'OpenLog.fit — workout & training log',
+        short_name: 'OpenLog.fit',
         description:
           'A minimal log for lifts, runs, climbs and body measurements. Free, offline, no account.',
         start_url: '/app/',
