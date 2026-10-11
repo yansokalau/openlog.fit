@@ -92,6 +92,22 @@
   animation: loader-message-in 400ms ease-out both;
 }
 
+/* A set landing in the landing page's mock. */
+@keyframes badge-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mock-badge {
+  animation: badge-in 180ms ease-out backwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .plan-card-in,
   .loader-message {
@@ -104,6 +120,10 @@
 
   .spark {
     display: none;
+  }
+
+  .mock-badge {
+    animation: none;
   }
 }
 

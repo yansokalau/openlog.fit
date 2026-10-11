@@ -1,4 +1,5 @@
 import './index.css'
+import { heroMock } from './heroMock'
 
 /**
  * The landing page is static HTML; this only wires the install buttons. They
@@ -63,3 +64,5 @@ buttons.forEach((button) =>
 const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
 if (ios && !standalone) showHint('On iPhone: tap Share, then Add to Home Screen.')
+
+heroMock()

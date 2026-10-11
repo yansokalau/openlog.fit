@@ -138,17 +138,19 @@
           <!-- A static likeness of the app, so the page shows the product
                rather than describing it. -->
           <figure aria-label="OpenLog: bench press open, with the weight and reps steppers and two sets already logged today" class="mx-auto w-full max-w-sm">
-            <div class="mr-2 border-2 border-ink bg-paper p-4 shadow-[8px_8px_0_0_var(--ink)] sm:mr-0">
+            <div data-mock class="mr-2 h-[500px] overflow-hidden border-2 border-ink bg-paper p-4 shadow-[8px_8px_0_0_var(--ink)] sm:mr-0">
               <p class="mb-2 text-sm font-bold uppercase tracking-[0.12em]">Monday Gym</p>
               <ul class="space-y-2 text-left">
                 <li class="border-2 border-ink">
-                  <div class="flex items-center gap-3 bg-accent p-3 text-accent-ink">
+                  <div data-mock-head class="flex items-center gap-3 bg-accent p-3 text-accent-ink">
                     <span class="min-w-0 flex-1">
                       <span class="block font-semibold">Bench press</span>
                       <span class="mt-0.5 block text-sm tabular-nums">Last: 3 × 8 · 80 kg</span>
                     </span>
-                    <span class="rotate-45 text-lg leading-none" aria-hidden="true">+</span>
+                    <span data-mock-toggle class="rotate-45 text-lg leading-none" aria-hidden="true">+</span>
                   </div>
+                  <div data-mock-panel class="grid">
+                    <div class="overflow-hidden">
                   <div class="space-y-3 border-t-2 border-ink p-3">
                     <div>
                       <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Weight (kg)</span>
@@ -161,17 +163,17 @@
                     <div>
                       <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Reps</span>
                       <div class="grid grid-cols-[3.5rem_1fr_3.5rem] border-2 border-ink">
-                        <span class="flex h-16 items-center justify-center border-r-2 border-ink text-2xl leading-none" aria-hidden="true">&minus;</span>
-                        <span class="flex h-16 items-center justify-center text-3xl font-semibold tabular-nums">8</span>
+                        <span data-mock-down class="flex h-16 items-center justify-center border-r-2 border-ink text-2xl leading-none" aria-hidden="true">&minus;</span>
+                        <span data-mock-reps class="flex h-16 items-center justify-center text-3xl font-semibold tabular-nums">8</span>
                         <span class="flex h-16 items-center justify-center border-l-2 border-ink text-2xl leading-none" aria-hidden="true">+</span>
                       </div>
                     </div>
-                    <div class="flex h-14 items-center justify-center border-2 border-ink bg-ink text-base font-medium uppercase tracking-wide text-paper">
+                    <div data-mock-log class="flex h-14 items-center justify-center border-2 border-ink bg-ink text-base font-medium uppercase tracking-wide text-paper">
                       Log set
                     </div>
                     <div>
-                      <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Today &middot; 2 sets</span>
-                      <ul class="flex flex-wrap gap-2">
+                      <span data-mock-count class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Today &middot; 2 sets</span>
+                      <ul data-mock-sets class="flex flex-wrap gap-2">
                         <li class="flex items-stretch border-2 border-current bg-accent text-accent-ink">
                           <span class="px-2 py-1 text-sm tabular-nums">82.5 kg × 8</span>
                           <span class="flex items-center border-l-2 border-current px-2 text-sm leading-none" aria-hidden="true">&#10005;</span>
@@ -181,6 +183,8 @@
                           <span class="flex items-center border-l-2 border-current px-2 text-sm leading-none" aria-hidden="true">&#10005;</span>
                         </li>
                       </ul>
+                    </div>
+                  </div>
                     </div>
                   </div>
                 </li>
@@ -198,6 +202,27 @@
                       <span class="border px-1.5 py-px text-[10px] font-medium uppercase tracking-[0.12em]">optional</span></span
                     >
                     <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Target: 2 × 12–15</span>
+                  </span>
+                  <span class="text-lg leading-none" aria-hidden="true">+</span>
+                </li>
+                <li class="flex items-center gap-3 border-2 border-ink p-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-semibold">Incline dumbbell press</span>
+                    <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Last: 3 × 10 · 28 kg</span>
+                  </span>
+                  <span class="text-lg leading-none" aria-hidden="true">+</span>
+                </li>
+                <li class="flex items-center gap-3 border-2 border-ink p-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-semibold">EZ-bar biceps curl</span>
+                    <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Last: 3 × 12 · 25 kg</span>
+                  </span>
+                  <span class="text-lg leading-none" aria-hidden="true">+</span>
+                </li>
+                <li class="flex items-center gap-3 border-2 border-ink p-3">
+                  <span class="min-w-0 flex-1">
+                    <span class="block font-semibold">Rope triceps pushdown</span>
+                    <span class="mt-0.5 block text-sm tabular-nums text-ink/60">Last: 3 × 12 · 30 kg</span>
                   </span>
                   <span class="text-lg leading-none" aria-hidden="true">+</span>
                 </li>
