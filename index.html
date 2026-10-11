@@ -110,12 +110,11 @@
               Workout &amp; training log
             </p>
             <h1 class="text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
-              The workout log that stays out of your way.
+              A workout log with nothing to read.
             </h1>
             <p class="mt-5 max-w-md text-lg text-ink/75">
-              Log lifts, runs, climbs and body measurements in a couple of taps. No charts, no
-              dashboards &mdash; just last time&rsquo;s number, on screen before every set, waiting
-              to be moved. Free, offline, no account.
+              Lifts, runs, climbs and body measurements. Last session&rsquo;s number sits on the
+              card, right before the set that has to beat it.
             </p>
             <div class="mt-8 flex flex-wrap gap-3">
               <a
@@ -133,6 +132,13 @@
               </button>
             </div>
             <p data-install-hint class="mt-3 text-sm text-ink/60" hidden></p>
+            <!-- Separators are drawn by CSS rather than written into the list,
+                 so a screen reader reads four items and not four bullets. -->
+            <ul class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-bold uppercase tracking-[0.14em] text-ink/60 [&>li+li]:before:mr-2 [&>li+li]:before:text-ink/35 [&>li+li]:before:content-['\00b7']">
+              <li>Free</li>
+              <li>No tracking</li>
+              <li>No account</li>
+            </ul>
           </div>
 
           <!-- A static likeness of the app, so the page shows the product
@@ -237,14 +243,6 @@
             <path d="M6 9l6 6 6-6" />
           </svg>
         </a>
-
-        <!-- Perks -->
-        <ul class="grid grid-cols-2 border-2 border-ink text-center text-sm font-bold uppercase tracking-[0.12em] sm:grid-cols-4">
-          <li class="border-b-2 border-r-2 border-ink p-4 sm:border-b-0">Free forever</li>
-          <li class="border-b-2 border-ink p-4 sm:border-b-0 sm:border-r-2">No account</li>
-          <li class="border-r-2 border-ink p-4">Works offline</li>
-          <li class="p-4">Data stays on device</li>
-        </ul>
 
         <!-- Features -->
         <section id="features" class="scroll-mt-6 py-16">
