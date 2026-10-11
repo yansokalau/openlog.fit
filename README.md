@@ -50,6 +50,28 @@ npm run dev
 - Moving the app from `/` to `/app/` keeps existing data: IndexedDB is per
   origin, not per path.
 
+### Domain
+
+`openlog.fit` is a Custom Domain on the `gym-tracker` Pages project, serving
+the **production** branch — which is what `npm run deploy:production` targets.
+`wrangler` cannot add one; it is the dashboard (Workers & Pages → the project →
+Custom domains) or the API:
+
+```bash
+curl -X POST "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/gym-tracker/domains" \
+  -H "Authorization: Bearer $CF_API_TOKEN" -H "Content-Type: application/json" \
+  -d '{"name":"openlog.fit"}'
+```
+
+`www.openlog.fit` is a redirect to the apex rather than a second Custom Domain,
+so there is one indexable hostname. `gym-tracker-eik.pages.dev` stays live and
+serves the same site — it is how a deployment is checked before the domain
+points at it, and the reason the WAF rule below is not the whole story.
+
+Two things are scoped to the hostname and have to list `openlog.fit`
+explicitly, or they fail only in production: the **Turnstile widget's**
+allowed hostnames, and the WAF rate-limiting rule under *AI plan builder*.
+
 ## Structure
 
 - `src/lib/db.ts` — IndexedDB access (stores: `groups`, `trackers`, `entries`,
