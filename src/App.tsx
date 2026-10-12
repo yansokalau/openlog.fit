@@ -44,43 +44,41 @@ export default function App() {
               sticky as one piece: the day being logged into has to stay on
               screen, and it lives beside the wordmark. */}
           {/* The paper stays full-width so nothing shows past the bar while
-              the page scrolls under it; the rule and the contents are held to
-              the landing page's own column instead. Same width, same 70px
-              height, same padding — the wordmark does not move when you cross
-              from one to the other. */}
+              the page scrolls under it. The rule rides the column itself, so
+              it reaches the screen edges on a phone and stops at the column on
+              a wide one — the same as the landing page's, which the wordmark
+              and the 70px height already match. */}
           <header className="sticky top-0 z-30 bg-paper">
-            <div className="mx-auto w-full max-w-5xl px-4">
-              <div className="flex items-center gap-2 border-b-2 border-ink py-4">
-                <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
-                  <LogoMark />
-                  <span>
-                    OpenLog
-                    <span className="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">
-                      .fit
-                    </span>
+            <div className="mx-auto flex w-full max-w-5xl items-center gap-2 border-b-2 border-ink px-4 py-4">
+              <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
+                <LogoMark />
+                <span>
+                  OpenLog
+                  <span className="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">
+                    .fit
                   </span>
-                </h1>
-                <InstallButton />
-                {showPlan && (
-                  <DatePicker
-                    date={active.date}
-                    isToday={active.isToday}
-                    onChange={setPickedDate}
-                  />
-                )}
-                <AppMenu
-                  theme={theme}
-                  onTheme={setTheme}
-                  system={system}
-                  onSystem={setSystem}
-                  snapshot={gym.snapshot}
-                  onReplaceAll={async (data) => {
-                    await gym.replaceAll(data);
-                    // Cleared: offer the builder again even if it was skipped.
-                    if (data.groups.length === 0) setSkippedBuilder(false);
-                  }}
+                </span>
+              </h1>
+              <InstallButton />
+              {showPlan && (
+                <DatePicker
+                  date={active.date}
+                  isToday={active.isToday}
+                  onChange={setPickedDate}
                 />
-              </div>
+              )}
+              <AppMenu
+                theme={theme}
+                onTheme={setTheme}
+                system={system}
+                onSystem={setSystem}
+                snapshot={gym.snapshot}
+                onReplaceAll={async (data) => {
+                  await gym.replaceAll(data);
+                  // Cleared: offer the builder again even if it was skipped.
+                  if (data.groups.length === 0) setSkippedBuilder(false);
+                }}
+              />
             </div>
           </header>
 
