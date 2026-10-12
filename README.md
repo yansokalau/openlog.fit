@@ -44,6 +44,11 @@ npm run dev
   `favicon.ico` from `public/favicon.svg`, a separate design drawn for 16px;
   and the share image from
   `scripts/og.svg`, by `npm run icons`. The PNGs are committed.
+- `public/llms.txt` is the [llmstxt.org](https://llmstxt.org) summary: what the
+  app is, the group/tracker/variant/entry model, and the four pages, for an
+  assistant asked about training logs. Keep it true when the model or the
+  privacy story changes; it is the one page written for a reader who will not
+  look at the screenshots.
 - Cloudflare Pages: `public/_redirects` rewrites `/app/*` to the shell,
   `public/404.html` keeps unknown URLs real 404s rather than the landing page,
   and `public/_headers` stops `sw.js` and the manifest being cached.

@@ -1,0 +1,43 @@
+# OpenLog
+
+> A free training log that runs in the browser, keeps everything on the device
+> and needs no account. It records lifts, runs, climbs, timed holds, bodyweight
+> and body measurements, session by session.
+
+OpenLog is a progressive web app at openlog.fit. It installs to a phone's home
+screen from the browser, with no app store, and works offline once visited. The
+log is held in the browser's own storage; there is no server-side account and
+no analytics, and the data leaves only as a backup file the user exports. The
+single exception is the optional AI plan builder: text pasted into it is sent
+to OpenAI to turn a written programme into trackers, and is not stored.
+
+It is deliberately not a coaching product. There are no feeds, streaks, charts
+or progress graphs. What an exercise card shows is the numbers from the last
+session, so the next set has something to beat.
+
+## Model
+
+Four levels, and no deeper. A **group** is a training day or a theme ("Friday",
+"Body & cardio"). A **tracker** is a thing logged inside it: an exercise, a run,
+a measurement. A tracker holds **variants**, which are alternatives that can be
+swapped to when a machine is taken, each keeping its own numbers. An **entry**
+is one logged set or reading.
+
+A tracker's type is chosen once, from seven presets, and decides what an entry
+looks like: strength (weight and reps), reps only, hold (time), cardio
+(distance and time), body measure (length), bodyweight (weight), and count.
+
+## Pages
+
+- [Home](https://openlog.fit/): what it does, how logging works, how to install it.
+- [App](https://openlog.fit/app/): the log itself. It opens by offering to build a plan, take a programme the user already follows, restore a backup, or start empty.
+- [Privacy](https://openlog.fit/privacy/): what leaves the device, which is close to nothing.
+- [Terms](https://openlog.fit/terms/)
+
+## Notes
+
+- Free. No paid tier, no ads, no sign-up.
+- Metric and imperial can be switched at any time. Values are stored in one canonical unit, so switching rewrites nothing.
+- A log moves between devices as a single exported JSON file. An import replaces what is on the receiving device rather than merging into it.
+- Sessions can be backdated, so a workout written down the next morning still lands on the right day.
+- Run by Yan Sokalau. Contact: openlog.fit@gmail.com
