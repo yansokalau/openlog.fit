@@ -75,7 +75,7 @@ export function TrackerForm({
         {editing ? (
           <p className="text-sm">
             {PRESETS[preset].label}
-            <span className="text-ink/50"> — {PRESETS[preset].hint}</span>
+            <span className="text-ink/50">: {PRESETS[preset].hint}</span>
           </p>
         ) : (
           <>
@@ -170,7 +170,7 @@ export function TrackerForm({
               <>
                 <Button
                   aria-label="Move tracker up"
-                  title="Move up — crosses into the previous group"
+                  title="Move up, crossing into the previous group"
                   className="w-12 !px-0"
                   disabled={!move.canMoveUp}
                   onClick={() => move.onMove(-1)}
@@ -179,7 +179,7 @@ export function TrackerForm({
                 </Button>
                 <Button
                   aria-label="Move tracker down"
-                  title="Move down — crosses into the next group"
+                  title="Move down, crossing into the next group"
                   className="w-12 !px-0"
                   disabled={!move.canMoveDown}
                   onClick={() => move.onMove(1)}

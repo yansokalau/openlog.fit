@@ -286,7 +286,7 @@ export function Onboarding({
               onChange={(e) => setPasted(e.target.value)}
               maxLength={MAX_PROGRAM_CHARS}
               rows={8}
-              placeholder={'Monday — Push\nBench press 3x6-8\nIncline DB press 3x10\n…'}
+              placeholder={'Monday, Push\nBench press 3x6-8\nIncline DB press 3x10\n…'}
               className="w-full border-2 border-ink bg-paper p-3 font-mono text-sm placeholder:text-ink/40"
             />
           </label>

@@ -65,7 +65,7 @@ export function InstallButton() {
             <li>2. Choose <strong className="font-semibold text-ink">Add to Home Screen</strong></li>
           </ol>
           <p className="mt-3 text-ink/60">
-            Opened from there, it gets its own window — and Safari stops
+            Opened from there, it gets its own window, and Safari stops
             clearing your log after a week away.
           </p>
         </div>

@@ -202,8 +202,8 @@ export function AppMenu({
             {clearing ? (
               <div className="space-y-2 border-2 border-ink p-2">
                 <p className="text-sm">
-                  Delete the whole plan and all {counts.entries.length} entries? Export first
-                  — this cannot be undone.
+                  Delete the whole plan and all {counts.entries.length} entries? Export
+                  first. This cannot be undone.
                 </p>
                 <div className="flex gap-2">
                   <Button
