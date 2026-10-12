@@ -43,41 +43,44 @@ export default function App() {
           {/* Outside the content column so the bar spans the window, and
               sticky as one piece: the day being logged into has to stay on
               screen, and it lives beside the wordmark. */}
-          <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper">
-            {/* The bar spans the window and its contents run much wider than
-                the body — a toolbar, not a column heading. py-4 rather than
-                py-3 so it stands 70px like the landing page's header: the
-                wordmark then keeps its exact position across the two. */}
-            <div className="mx-auto flex w-full max-w-[1440px] items-center gap-2 px-4 py-4">
-              <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
-                <LogoMark />
-                <span>
-                  OpenLog
-                  <span className="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">
-                    .fit
+          {/* The paper stays full-width so nothing shows past the bar while
+              the page scrolls under it; the rule and the contents are held to
+              the landing page's own column instead. Same width, same 70px
+              height, same padding — the wordmark does not move when you cross
+              from one to the other. */}
+          <header className="sticky top-0 z-30 bg-paper">
+            <div className="mx-auto w-full max-w-5xl px-4">
+              <div className="flex items-center gap-2 border-b-2 border-ink py-4">
+                <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
+                  <LogoMark />
+                  <span>
+                    OpenLog
+                    <span className="ml-1 inline-block -translate-y-[0.35em] -rotate-[8deg] bg-accent px-1 font-sans text-[0.45em] font-semibold leading-[1.15] text-accent-ink">
+                      .fit
+                    </span>
                   </span>
-                </span>
-              </h1>
-              <InstallButton />
-              {showPlan && (
-                <DatePicker
-                  date={active.date}
-                  isToday={active.isToday}
-                  onChange={setPickedDate}
+                </h1>
+                <InstallButton />
+                {showPlan && (
+                  <DatePicker
+                    date={active.date}
+                    isToday={active.isToday}
+                    onChange={setPickedDate}
+                  />
+                )}
+                <AppMenu
+                  theme={theme}
+                  onTheme={setTheme}
+                  system={system}
+                  onSystem={setSystem}
+                  snapshot={gym.snapshot}
+                  onReplaceAll={async (data) => {
+                    await gym.replaceAll(data);
+                    // Cleared: offer the builder again even if it was skipped.
+                    if (data.groups.length === 0) setSkippedBuilder(false);
+                  }}
                 />
-              )}
-              <AppMenu
-                theme={theme}
-                onTheme={setTheme}
-                system={system}
-                onSystem={setSystem}
-                snapshot={gym.snapshot}
-                onReplaceAll={async (data) => {
-                  await gym.replaceAll(data);
-                  // Cleared: offer the builder again even if it was skipped.
-                  if (data.groups.length === 0) setSkippedBuilder(false);
-                }}
-              />
+              </div>
             </div>
           </header>
 
