@@ -60,9 +60,8 @@ buttons.forEach((button) =>
   }),
 )
 
-// iOS Safari has no install prompt: point at the Share sheet instead.
-const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-if (ios && !standalone) showHint('On iPhone: tap Share, then Add to Home Screen.')
+// iOS Safari has no install prompt and nothing is said about it here: the
+// Share-sheet steps are in the install section below, and in the app's own
+// install button. A hint pinned under the hero buttons said it a third time.
 
 heroMock()
