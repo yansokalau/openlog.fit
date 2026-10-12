@@ -15,15 +15,9 @@ const BEAT = {
   afterOpen: 900,
   betweenSets: 850,
   beforeNudge: 950,
-  beforeHistory: 900,
-  /** How long the earlier sessions stay in view. */
-  showHistory: 1900,
-  beforeClose: 400,
+  beforeClose: 1700,
   beforeReplay: 1100,
 }
-
-/** How far the frame slides to bring the earlier sessions into view, px. */
-const HISTORY_SLIDE = 80
 
 /** Panel open/close, matching EXPAND_MS in the app. */
 const EXPAND_MS = 200
@@ -51,8 +45,7 @@ export function heroMock() {
   const log = root.querySelector<HTMLElement>('[data-mock-log]')
   const count = root.querySelector<HTMLElement>('[data-mock-count]')
   const sets = root.querySelector<HTMLElement>('[data-mock-sets]')
-  const scroller = root.querySelector<HTMLElement>('[data-mock-scroll]')
-  if (!panel || !head || !toggle || !reps || !down || !log || !count || !sets || !scroller) return
+  if (!panel || !head || !toggle || !reps || !down || !log || !count || !sets) return
 
   // The earlier sessions are dated here rather than in the markup, so the mock
   // does not drift into showing a date from last spring.
@@ -104,11 +97,6 @@ export function heroMock() {
     count.textContent = `Today · ${n} ${n === 1 ? 'set' : 'sets'}`
   }
 
-  /** Slides the whole frame, the way a thumb would, to show what is below. */
-  const slide = (by: number) => {
-    scroller.style.transform = by ? `translateY(${-by}px)` : ''
-  }
-
   const rewind = () => {
     sets.replaceChildren()
     count.textContent = 'Today · 0 sets'
@@ -118,7 +106,6 @@ export function heroMock() {
   // Straight to the start: no animation on the very first frame, or the card
   // is seen shutting before it was ever open.
   panel.style.gridTemplateRows = '0fr'
-  slide(0)
   head.classList.remove('bg-accent', 'text-accent-ink')
   toggle.classList.remove('rotate-45')
   rewind()
@@ -137,13 +124,6 @@ export function heroMock() {
 
       await beat(BEAT.betweenSets)
       await logSet(REPS_AFTER)
-
-      // Today's two sets are in; now show that the weeks before them are too.
-      await beat(BEAT.beforeHistory)
-      slide(HISTORY_SLIDE)
-
-      await beat(BEAT.showHistory)
-      slide(0)
 
       await beat(BEAT.beforeClose)
       open(false)
