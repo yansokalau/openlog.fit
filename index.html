@@ -130,11 +130,15 @@
             </div>
             <p data-install-hint class="mt-3 text-sm text-ink/60" hidden></p>
             <!-- Separators are drawn by CSS rather than written into the list,
-                 so a screen reader reads four items and not four bullets. -->
-            <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] md:justify-start font-bold uppercase tracking-[0.14em] text-ink/60 [&>li+li]:before:mr-2 [&>li+li]:before:text-ink/35 [&>li+li]:before:content-['\00b7']">
+                 so a screen reader reads four items and not four bullets. They
+                 trail each item rather than leading the next: when the row wraps
+                 on a narrow screen the dot stays at the end of the line instead
+                 of dangling at the start of the one below. -->
+            <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] md:justify-start font-bold uppercase tracking-[0.14em] text-ink/60 [&>li:not(:last-child)]:after:ml-2 [&>li:not(:last-child)]:after:text-ink/35 [&>li:not(:last-child)]:after:content-['\00b7']">
               <li>Free</li>
               <li>No tracking</li>
               <li>No account</li>
+              <li>Offline</li>
             </ul>
           </div>
 
