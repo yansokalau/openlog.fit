@@ -45,8 +45,10 @@ export default function App() {
               screen, and it lives beside the wordmark. */}
           <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper">
             {/* The bar spans the window and its contents run much wider than
-                the body — a toolbar, not a column heading. */}
-            <div className="mx-auto flex w-full max-w-[1440px] items-center gap-2 px-4 py-3">
+                the body — a toolbar, not a column heading. py-4 rather than
+                py-3 so it stands 70px like the landing page's header: the
+                wordmark then keeps its exact position across the two. */}
+            <div className="mx-auto flex w-full max-w-[1440px] items-center gap-2 px-4 py-4">
               <h1 className="mr-auto flex items-center gap-2 font-logo text-3xl leading-none">
                 <LogoMark />
                 <span>
