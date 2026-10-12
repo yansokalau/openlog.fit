@@ -146,6 +146,7 @@
                rather than describing it. -->
           <figure aria-label="OpenLog: bench press open, with the weight and reps steppers and two sets already logged today" class="mx-auto w-full max-w-sm text-left">
             <div data-mock class="mr-2 h-[500px] overflow-hidden border-2 border-ink bg-paper p-4 shadow-[8px_8px_0_0_var(--ink)] sm:mr-0">
+              <div data-mock-scroll class="transition-transform duration-500 ease-out">
               <p class="mb-2 text-sm font-bold uppercase tracking-[0.12em]">Monday Gym</p>
               <ul class="space-y-2 text-left">
                 <li class="border-2 border-ink">
@@ -188,6 +189,20 @@
                         <li class="flex items-stretch border-2 border-current bg-accent text-accent-ink">
                           <span class="px-2 py-1 text-sm tabular-nums">82.5 kg × 7</span>
                           <span class="flex items-center border-l-2 border-current px-2 text-sm leading-none" aria-hidden="true">&#10005;</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <span class="block pb-1 text-[10px] font-semibold uppercase tracking-[0.15em]">Earlier</span>
+                      <ul class="space-y-1">
+                        <li class="text-sm tabular-nums text-ink/60">
+                          <span data-mock-date class="font-semibold text-ink/80">Oct 6:</span> 80 kg × 8, 80 kg × 7, 77.5 kg × 6
+                        </li>
+                        <li class="text-sm tabular-nums text-ink/60">
+                          <span data-mock-date class="font-semibold text-ink/80">Sep 29:</span> 77.5 kg × 8, 77.5 kg × 7, 75 kg × 6
+                        </li>
+                        <li class="text-sm tabular-nums text-ink/60">
+                          <span data-mock-date class="font-semibold text-ink/80">Sep 22:</span> 75 kg × 8, 75 kg × 7, 72.5 kg × 6
                         </li>
                       </ul>
                     </div>
@@ -237,6 +252,7 @@
                   <span class="text-lg leading-none" aria-hidden="true">+</span>
                 </li>
               </ul>
+              </div>
             </div>
           </figure>
         </section>
