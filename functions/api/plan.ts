@@ -49,7 +49,7 @@ ${PRESET_GUIDE}
 Rules:
 - If the user gives an existing program, reproduce it faithfully: same days, exercises, order, sets and reps. Fix obvious typos, normalise exercise names, and only change what the notes or preferences ask for.
 - If there is no program, design one from the preferences and notes: realistic volume for the experience level and session length, using only the equipment available.
-- Pick the preset that matches how each item is logged: weighted lifts are strength, pull-ups and push-ups are reps, planks are hold, runs and rows are cardio.
+- Pick the preset that matches how each item is logged: weighted lifts are strength, pull-ups and push-ups are reps, planks are hold, a steady run or row is cardio, repeated efforts like 8x400 m or a swim set are interval, a yoga class or a match is session, and anything you simply tally is count.
 - Add at most one or two alternatives per tracker, and only where useful.
 - If body tracking is wanted, add a group named "Body" with a bodyweight tracker and a waist measure.
 - Order groups so the ones logged every day or every week come first: body measurements, bodyweight, steps, habits and similar ongoing tracking. The training sessions follow, in the order they are done. This applies to an imported program too: keep its sessions in their order, but put any body or tracking groups above them.
@@ -155,6 +155,13 @@ export async function onRequestPost({
       return fail(
         503,
         "The plan builder is unavailable right now. Please try again later."
+      );
+    }
+    if (detail.includes("unsupported_country_region_territory")) {
+      return fail(
+        451,
+        "The plan builder is not available in your country. You can still start " +
+          "empty and add your own trackers, or restore a backup from another device."
       );
     }
     return fail(
