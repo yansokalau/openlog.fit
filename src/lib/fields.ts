@@ -151,6 +151,10 @@ export function formatCompact(
   grouped: Record<string, number[]>,
   system: UnitSystem,
 ): string {
+  // A tracker can have nothing to measure: the record is that it happened at
+  // all. There is no range to print, so the fact stands in for the numbers.
+  if (fields.length === 0) return 'Done'
+
   const last = fields[fields.length - 1]
   const tail = grouped[last.key] ?? []
   const multiplier =

@@ -99,8 +99,14 @@ export function EntryLogger({
   const shownHistory =
     collapsible && !showAll ? history.slice(0, HISTORY_SHOWN) : history;
 
-  const noun =
-    logStyle === "sets"
+  // A tracker with nothing to measure is logging an act, not a number, so it
+  // says so: "Mark done" over a button with no steppers above it, and "times"
+  // where a count of entries would otherwise read oddly.
+  const nothingToMeasure = fields.length === 0;
+
+  const noun = nothingToMeasure
+    ? { one: "time", many: "times" }
+    : logStyle === "sets"
       ? { one: "set", many: "sets" }
       : { one: "entry", many: "entries" };
 
@@ -158,7 +164,7 @@ export function EntryLogger({
             setBurst((n) => n + 1);
           }}
         >
-          Log {noun.one}
+          {nothingToMeasure ? "Mark done" : `Log ${noun.one}`}
         </Button>
         {burst > 0 && <LogBurst key={burst} />}
       </div>

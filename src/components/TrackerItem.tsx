@@ -145,7 +145,10 @@ export function TrackerItem({
   // all rather than a placeholder.
   const meta: string[] = [];
   if (primary.target) meta.push(primary.target);
-  if (primaryLast) meta.push(primaryLast.summary);
+  // A tracker with nothing to measure has no numbers to summarise, and the
+  // stand-in the formatter uses for its chips reads as a lie here: a card last
+  // touched on Tuesday would say "3d ago · Done". The badge already carries it.
+  if (primaryLast && preset.fields.length > 0) meta.push(primaryLast.summary);
   if (tracker.variants.length > 1) {
     const count = tracker.variants.length - 1;
     meta.push(`${count} ${count === 1 ? "alternative" : "alternatives"}`);

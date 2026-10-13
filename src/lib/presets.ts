@@ -1,7 +1,16 @@
 import type { Field, LogStyle, Tracker } from "./types";
 
 export type PresetId =
-  "strength" | "reps" | "hold" | "cardio" | "measure" | "bodyweight" | "count";
+  | "strength"
+  | "reps"
+  | "hold"
+  | "cardio"
+  | "interval"
+  | "session"
+  | "measure"
+  | "bodyweight"
+  | "count"
+  | "done";
 
 export type Preset = {
   label: string;
@@ -25,7 +34,7 @@ export type Preset = {
 export const PRESETS: Record<PresetId, Preset> = {
   strength: {
     label: "Strength",
-    hint: "Weight × reps, several sets — bench press, squat, curl",
+    hint: "Weight × reps, several sets: bench press, squat, curl",
     nameHint: "Bench press",
     altHint: "Dumbbell press",
     targetHint: "3x6-8, or 100 kg",
@@ -37,7 +46,7 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   reps: {
     label: "Reps only",
-    hint: "Reps, several sets — pull-ups, push-ups, dips",
+    hint: "Reps, several sets: pull-ups, push-ups, dips",
     nameHint: "Pull-ups",
     altHint: "Assisted pull-ups",
     targetHint: "3x8-12",
@@ -46,7 +55,7 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   hold: {
     label: "Hold",
-    hint: "Time held, several sets — plank, dead hang, wall sit",
+    hint: "Time held, several sets: plank, dead hang, wall sit",
     nameHint: "Plank",
     altHint: "Knee plank",
     targetHint: "3x60 s",
@@ -56,7 +65,7 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   cardio: {
     label: "Cardio",
-    hint: "Distance and time, once — run, row, ride, swim",
+    hint: "Distance and time, once: run, row, ride, swim",
     nameHint: "Morning run",
     altHint: "Treadmill run",
     targetHint: "5 km in 25 min",
@@ -66,9 +75,31 @@ export const PRESETS: Record<PresetId, Preset> = {
       { key: "duration", kind: "duration", label: "" },
     ],
   },
+  interval: {
+    label: "Intervals",
+    hint: "Distance and time, several times: 400s, swim sets, rowing pieces",
+    nameHint: "400 m repeats",
+    altHint: "300 m repeats",
+    targetHint: "8x400 m in 85 s",
+    logStyle: "sets",
+    fields: [
+      { key: "distance", kind: "distance", label: "", unit: "m" },
+      { key: "duration", kind: "duration", label: "", unit: "s" },
+    ],
+  },
+  session: {
+    label: "Session",
+    hint: "How long it lasted, once: yoga, a class, a match",
+    nameHint: "Yoga",
+    altHint: "Home yoga",
+    targetHint: "45 min",
+    logStyle: "single",
+    // Minutes, unlike a hold: nobody counts an hour of football in seconds.
+    fields: [{ key: "duration", kind: "duration", label: "", unit: "min" }],
+  },
   measure: {
     label: "Body measure",
-    hint: "One length, once — waist, chest, arm",
+    hint: "One length, once: waist, chest, arm",
     nameHint: "Waist",
     altHint: "Waist, morning",
     targetHint: "under 82 cm",
@@ -77,7 +108,7 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   bodyweight: {
     label: "Bodyweight",
-    hint: "One weight, once — the scale",
+    hint: "One weight, once: the scale",
     nameHint: "Bodyweight",
     altHint: "Gym scale",
     targetHint: "75 kg",
@@ -87,12 +118,23 @@ export const PRESETS: Record<PresetId, Preset> = {
   },
   count: {
     label: "Count",
-    hint: "One number, once — steps, routes climbed, sessions",
+    hint: "One number, once: steps, routes climbed, sessions",
     nameHint: "Routes climbed",
     altHint: "Indoor routes",
     targetHint: "20 routes",
     logStyle: "single",
     fields: [{ key: "count", kind: "count", label: "" }],
+  },
+  done: {
+    label: "Done",
+    hint: "Nothing to measure, just that you did it: stretching, a pill, physio",
+    nameHint: "Stretching",
+    altHint: "Short stretch",
+    targetHint: "every morning",
+    logStyle: "single",
+    // No fields at all. The entry's existence is the whole record, and the
+    // card's own badge already says "today" or how long since.
+    fields: [],
   },
 };
 
